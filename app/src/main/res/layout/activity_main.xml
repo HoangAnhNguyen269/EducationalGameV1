@@ -15,18 +15,66 @@
         layout="@layout/toolbar_main"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+       >
+
         <TextView
-            android:layout_margin="20dp"
-            android:id="@+id/high_score_lable"
+            style="@style/headline"
+            android:id="@+id/high_score_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="High score" />
+            android:text="High Score" />
+
         <TextView
+            style="@style/headline_content"
             android:id="@+id/high_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="100" />
 
+        <TextView
+            style="@style/headline"
+            android:id="@+id/choose_subject_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Choose Subject" />
+
+
+        <Spinner
+            android:id="@+id/level_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/subjects"
+            android:minHeight="48dp"
+            android:textAlignment="center" />
+
+        <Button
+            android:id="@+id/new_attempt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Attempt" />
+
+        <Button
+            android:id="@+id/score_board"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Score Board" />
+        <Button
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Setting" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
 </androidx.appcompat.widget.LinearLayoutCompat>
+
 
 

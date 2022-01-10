@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">EducationalGameV1</string>
+    <string-array name="subjects">
+        <item>Basic Computer</item>
+        <item>Math</item>
+    </string-array>
 </resources>
