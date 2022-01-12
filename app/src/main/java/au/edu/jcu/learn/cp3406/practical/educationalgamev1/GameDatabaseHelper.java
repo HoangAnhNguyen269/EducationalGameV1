@@ -4,16 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class EducationalGameDatabaseHelper extends SQLiteOpenHelper {
+public class GameDatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "EducationalGameDatabase"; // the name of our database
     private static final int DB_VERSION = 1; // the initial version of the database
 
@@ -30,21 +25,21 @@ public class EducationalGameDatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    EducationalGameDatabaseHelper(Context context) {
+    GameDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
 
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        updateEducationalGameDatabase(db, 0, DB_VERSION);
+        updateGameDatabase(db, 0, DB_VERSION);
     }
 
 
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        updateEducationalGameDatabase(db, oldVersion, newVersion);
+        updateGameDatabase(db, oldVersion, newVersion);
     }
 
     private static void insertQuiz(SQLiteDatabase db, String tableName,String question, String ans1,String ans2, String ans3, String ans4, int correctAnsNum) {
@@ -58,8 +53,9 @@ public class EducationalGameDatabaseHelper extends SQLiteOpenHelper {
         db.insert(tableName, null, quizQuestionValues);
     }
 
-    private void updateEducationalGameDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
+    private void updateGameDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+        if(oldVersion <1){
             db.execSQL("CREATE TABLE "+ MATH_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + QUESTION_COLUMN+" TEXT, "
                     + ANS_1_COLUMN+" TEXT, "
@@ -68,28 +64,33 @@ public class EducationalGameDatabaseHelper extends SQLiteOpenHelper {
                     + ANS_4_COLUMN+" TEXT, "
                     + CORRECT_ANS_NUM_COLUMN+" INTEGER);");
 
-        InputStream mathTableIS = GameActivity.mathcsvInputStream;
-        CSVFileReader mathFileReader = new CSVFileReader(mathTableIS);
-        List<QuizQuestion> quizQuestionList = mathFileReader.getQuizQuestions();
-        for (int i = 0; i < mathFileReader.getRowNum(); i++) {
-            QuizQuestion quizQuestion = quizQuestionList.get(i);
-            String question = quizQuestion.getQuestion();
-            String ans1 = quizQuestion.getAns1();
-            String ans2 = quizQuestion.getAns2();
-            String ans3 = quizQuestion.getAns3();
-            String ans4 = quizQuestion.getAns4();
-            int correctAns = quizQuestion.getCorrectAnsNum();
-            insertQuiz(db,MATH_TABLE,question,ans1,ans2,ans3,ans4,correctAns);
-        }
+            InputStream mathTableIS = GameActivity.mathcsvInputStream;
+            CSVFileReader mathFileReader = new CSVFileReader(mathTableIS);
+            List<QuizQuestion> quizQuestionList = mathFileReader.getQuizQuestions();
+            for (int i = 0; i < mathFileReader.getRowNum(); i++) {
+                QuizQuestion quizQuestion = quizQuestionList.get(i);
+                String question = quizQuestion.getQuestion();
+                String ans1 = quizQuestion.getAns1();
+                String ans2 = quizQuestion.getAns2();
+                String ans3 = quizQuestion.getAns3();
+                String ans4 = quizQuestion.getAns4();
+                int correctAns = quizQuestion.getCorrectAnsNum();
+                insertQuiz(db,MATH_TABLE,question,ans1,ans2,ans3,ans4,correctAns);
+            }
 
-
-//            db.execSQL("CREATE TABLE "+ BASIC_COMPUTER_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+            //            db.execSQL("CREATE TABLE "+ BASIC_COMPUTER_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
 //                    + QUESTION_COLUMN+" TEXT, "
 //                    + ANS_1_COLUMN+" TEXT, "
 //                    + ANS_2_COLUMN+" TEXT, "
 //                    + ANS_3_COLUMN+" TEXT, "
 //                    + ANS_4_COLUMN+" TEXT, "
 //                    + CORRECT_ANS_NUM_COLUMN+" INTEGER);");
+
+        }
+
+
+
+
 
 
 
