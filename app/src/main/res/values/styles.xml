@@ -12,6 +12,10 @@
     <style name="quiz_game_toolbar" parent ="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name ="android:background">@color/green</item>
     </style>
+    <style name="result_row_view">
+        <item name ="android:layout_margin">10dp</item>
+        <item name ="android:textColor">@color/black</item>
+    </style>
 
 
 </resources>

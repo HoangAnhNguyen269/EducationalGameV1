@@ -1,0 +1,36 @@
+<TableRow
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        style="@style/result_row_view"
+        android:text="User name"
+        android:id="@+id/result_row_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        />
+
+    <TextView
+        android:text="subject"
+        android:id="@+id/result_row_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/result_row_view"/>
+    <TextView
+        android:text="score"
+        android:id="@+id/result_row_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/result_row_view"/>
+
+    <TextView
+        android:text="avg seconds"
+        android:id="@+id/result_row_avg_seconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/result_row_view"/>
+
+
+</TableRow>

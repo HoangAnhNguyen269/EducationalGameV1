@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
 
     Spinner subjectSpinner;
     Button newAttemptButton;
+    Button scoreBoardButton;
     public static String userName = "admin";
 
     @Override
@@ -29,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         //match the subject to their View
         subjectSpinner = findViewById(R.id.subject_spinner);
         newAttemptButton = findViewById(R.id.new_attempt);
-
         //set up the listener for attempt button
         newAttemptButton.setOnClickListener(new View.OnClickListener(){
 
@@ -42,6 +42,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        scoreBoardButton = findViewById(R.id.score_board);
+        scoreBoardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,
+                        HighScoreActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
 
     }
 

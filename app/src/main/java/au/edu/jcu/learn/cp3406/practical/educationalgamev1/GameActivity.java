@@ -60,6 +60,8 @@ public class GameActivity extends AppCompatActivity {
     //define WorkerThread
     private GameWorkerThread gameWorkerThread;
 
+    //define the asynctask variable
+    UpdateResultTask updateResultTask;
 
     public GameActivity() {
         Handler mainHandler = new Handler();
@@ -311,9 +313,13 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
-        db.close();
         super.onDestroy();
+        db.close();
         gameWorkerThread.interrupt();
+        //prevent potential memory leak
+        if(updateResultTask != null){
+            updateResultTask.cancel(true);
+        }
     }
 
     protected void onCLickNext(){
@@ -326,8 +332,8 @@ public class GameActivity extends AppCompatActivity {
             startCurrentQuestion();
         }else{
             //when the quiz is finished and the user wants to store their result.
-            new UpdateResultTask().execute(totalCorrectAns, totalSeconds);
-
+            updateResultTask = new UpdateResultTask();
+            updateResultTask.execute(totalCorrectAns, totalSeconds);
             Intent intent = new Intent(GameActivity.this,
                     ShowQuizResultActivity.class);
             intent.putExtra(ShowQuizResultActivity.SUBJECT_STRING, subject);
