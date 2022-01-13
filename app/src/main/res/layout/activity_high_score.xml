@@ -10,7 +10,8 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -19,7 +20,53 @@
         <TableLayout
             android:id="@+id/result_table"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
+            <TableRow
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border">
+
+                <TextView
+                    android:textSize="12sp"
+                    style="@style/result_row_view"
+                    android:text="User name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAllCaps="true"
+                    />
+
+                <TextView
+                    android:textSize="12sp"
+                    android:textAllCaps="true"
+                    android:text="subject"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/result_row_view"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:textSize="12sp"
+                    android:textAllCaps="true"
+                    android:text="score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/result_row_view"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:textSize="12sp"
+                    android:textAllCaps="true"
+                    android:text="seconds/question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/result_row_view"
+                    android:layout_weight="1"/>
+
+
+            </TableRow>
+
+        </TableLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

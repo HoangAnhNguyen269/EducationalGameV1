@@ -11,7 +11,8 @@
         android:theme="@style/Theme.EducationalGameV1">
         <activity
             android:name=".HighScoreActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity
             android:name=".ShowQuizResultActivity"
             android:exported="false" />
