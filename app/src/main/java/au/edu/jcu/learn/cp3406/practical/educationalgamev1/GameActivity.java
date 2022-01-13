@@ -3,10 +3,13 @@ package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
+import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -21,8 +24,8 @@ import java.util.List;
 
 public class GameActivity extends AppCompatActivity {
     final public static String SUBJECT_FINAL_STRING = "selected subject";
-    private String BASIC_COMPUTER;
-    private String  MATH;
+    public String BASIC_COMPUTER;
+    public String  MATH;
 
     //set list of Question objects
     List<QuizQuestion> quizQuestions = new ArrayList<>();
@@ -94,7 +97,8 @@ public class GameActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getResult(); //this method is just for testing
+                onCLickNext();
+
             }
         });
 
@@ -177,7 +181,6 @@ public class GameActivity extends AppCompatActivity {
         isShowingResult =true;
         stopwatch.onClickStop();
         totalSeconds += (stopwatch.settingSeconds-stopwatch.seconds);
-        displayResult();
         if(selectedAns == timeUpAns){
             Toast.makeText(GameActivity.this, "Run out of time", Toast.LENGTH_LONG).show();
         } else if(selectedAns== quizQuestions.get(currentQuestion).getCorrectAnsNum()){
@@ -186,12 +189,14 @@ public class GameActivity extends AppCompatActivity {
         } else{
             Toast.makeText(GameActivity.this, "Wrong", Toast.LENGTH_LONG).show();
         }
+        displayResult();
         stopwatch.finish = false;
 
     }
 
     protected void displayQuestion(){
-        //I will check the subject user type later on
+        //set
+            nextButton.setVisibility(View.GONE);
             QuizQuestion quiz = quizQuestions.get(currentQuestion);
             questionCount.setText(String.valueOf(currentQuestion+1)+"/"+String.valueOf(quizQuestions.size()));
             questionTextView.setText(quiz.getQuestion());
@@ -204,11 +209,13 @@ public class GameActivity extends AppCompatActivity {
             ans4Button.setText(quiz.getAns4());
             ans4Button.setBackgroundResource(R.drawable.round_back_white_ans_button);
             setAllAnsButtonListener();
+
     }
 
     protected void displayResult(){
         displayQuestion();
         removeAllAnsButtonListener();
+        nextButton.setVisibility(View.VISIBLE);
         int correctAnsNum = quizQuestions.get(currentQuestion).getCorrectAnsNum();
         switch(correctAnsNum){
             case 1:
@@ -218,10 +225,10 @@ public class GameActivity extends AppCompatActivity {
                 ans2Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
                 break;
             case 3:
-                ans1Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
+                ans3Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
                 break;
             case 4:
-                ans1Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
+                ans4Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
                 break;
         }
         if(selectedAns != correctAnsNum){
@@ -233,16 +240,16 @@ public class GameActivity extends AppCompatActivity {
                     ans2Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
                     break;
                 case 3:
-                    ans1Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
+                    ans3Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
                     break;
                 case 4:
-                    ans1Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
+                    ans4Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
                     break;
                 case 10: //timeUpAns
                     ans1Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
-                    ans1Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
                     ans2Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
                     ans3Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
+                    ans4Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
                     ans4Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
                     switch(correctAnsNum){
                         case 1:
@@ -252,10 +259,10 @@ public class GameActivity extends AppCompatActivity {
                             ans2Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
                             break;
                         case 3:
-                            ans1Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
+                            ans3Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
                             break;
                         case 4:
-                            ans1Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
+                            ans4Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
                             break;
                     }
                     break;
@@ -263,6 +270,7 @@ public class GameActivity extends AppCompatActivity {
         }
 
     }
+
 
     protected void setAllAnsButtonListener(){
 
@@ -305,6 +313,64 @@ public class GameActivity extends AppCompatActivity {
     public void onDestroy(){
         db.close();
         super.onDestroy();
+        gameWorkerThread.interrupt();
+    }
+
+    protected void onCLickNext(){
+
+        currentQuestion++;
+        if(currentQuestion+1 <quizQuestions.size()){
+            startCurrentQuestion();
+        }else if(currentQuestion+1 ==quizQuestions.size()){
+            nextButton.setText("Finish");
+            startCurrentQuestion();
+        }else{
+            //when the quiz is finished and the user wants to store their result.
+            new UpdateResultTask().execute(totalCorrectAns, totalSeconds);
+
+            Intent intent = new Intent(GameActivity.this,
+                    ShowQuizResultActivity.class);
+            intent.putExtra(ShowQuizResultActivity.SUBJECT_STRING, subject);
+            intent.putExtra(ShowQuizResultActivity.CORRECT_QUESTION_NUM, totalCorrectAns);
+            intent.putExtra(ShowQuizResultActivity.TOTAL_QUESTIONS,quizQuestions.size());
+            intent.putExtra(ShowQuizResultActivity.TOTAL_SECONDS, totalSeconds);
+            startActivity(intent);
+        }
+    }
+
+    private class UpdateResultTask extends AsyncTask<Integer, Void, Boolean> {
+        ContentValues userResultValues ;
+
+        protected void onPreExecute() {
+            userResultValues = new ContentValues();
+        }
+
+        protected Boolean doInBackground(Integer... intNums) {
+            float scoreInDatabase = (float) totalCorrectAns/quizQuestions.size()*10;
+            float averageSecondsDatabase = (float) totalSeconds/quizQuestions.size();
+            SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(GameActivity.this);
+            try {
+                SQLiteDatabase db = gameDatabaseHelper.getWritableDatabase();
+                userResultValues.put(GameDatabaseHelper.USER_NAME_COLUMN, MainActivity.userName);
+                userResultValues.put(GameDatabaseHelper.SUBJECT_COLUMN, subject);
+                userResultValues.put(GameDatabaseHelper.SCORE_COLUMN, scoreInDatabase);
+                userResultValues.put(GameDatabaseHelper.AVERAGE_SECONDS_COLUMN, averageSecondsDatabase);
+                db.insert(GameDatabaseHelper.RESULT_TABLE,null,userResultValues);
+                db.close();
+                return true;
+            } catch (SQLiteException e) {
+                return false;
+
+            }
+        }
+
+        protected void onPostExecute(Boolean success) {
+            if (!success) {
+                Toast toast = Toast.makeText(GameActivity.this,
+                        "Database unavailable", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
     }
 
 }

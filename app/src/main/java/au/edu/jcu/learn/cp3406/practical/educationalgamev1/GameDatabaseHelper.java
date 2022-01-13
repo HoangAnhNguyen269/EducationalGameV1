@@ -12,10 +12,23 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "EducationalGameDatabase"; // the name of our database
     private static final int DB_VERSION = 1; // the initial version of the database
 
+    //store the subject name
+    //check strings.xml
+    public static final String MATH = "Math";
+    public static final String BASIC_COMPUTER = "Basic Computer";
     //store table name
     public static final String MATH_TABLE ="MATH_TABLE";
     public static final String BASIC_COMPUTER_TABLE ="COMPUTER_TABLE";
-    //store column name
+    public static final String RESULT_TABLE ="RESULT_TABLE";
+
+    //store the column name
+    public static final String USER_NAME_COLUMN = "USER_NAME";
+    public static final String SUBJECT_COLUMN = "SUBJECT";
+    public static final String SCORE_COLUMN = "SCORE";
+    public static final String AVERAGE_SECONDS_COLUMN ="AVERAGE_SECONDS";
+
+
+    //store column name of question tables
     public static final String QUESTION_COLUMN ="QUESTION";
     public static final String ANS_1_COLUMN ="ANS_1";
     public static final String ANS_2_COLUMN ="ANS_2";
@@ -53,9 +66,12 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
         db.insert(tableName, null, quizQuestionValues);
     }
 
+
+
     private void updateGameDatabase(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         if(oldVersion <1){
+            //import questions to math table
             db.execSQL("CREATE TABLE "+ MATH_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + QUESTION_COLUMN+" TEXT, "
                     + ANS_1_COLUMN+" TEXT, "
@@ -78,7 +94,16 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
                 insertQuiz(db,MATH_TABLE,question,ans1,ans2,ans3,ans4,correctAns);
             }
 
-            //            db.execSQL("CREATE TABLE "+ BASIC_COMPUTER_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+            //create table that get the result
+//            //this table here has errors
+
+            db.execSQL("CREATE TABLE "+ RESULT_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + USER_NAME_COLUMN+" TEXT, "
+                    + SUBJECT_COLUMN+" TEXT, "
+                    + SCORE_COLUMN+" REAL, "
+                    + AVERAGE_SECONDS_COLUMN+" REAL);");
+
+//                        db.execSQL("CREATE TABLE "+ BASIC_COMPUTER_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
 //                    + QUESTION_COLUMN+" TEXT, "
 //                    + ANS_1_COLUMN+" TEXT, "
 //                    + ANS_2_COLUMN+" TEXT, "

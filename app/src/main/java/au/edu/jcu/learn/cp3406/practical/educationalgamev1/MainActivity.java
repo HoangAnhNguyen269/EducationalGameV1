@@ -13,10 +13,13 @@ public class MainActivity extends AppCompatActivity {
 
     Spinner subjectSpinner;
     Button newAttemptButton;
+    public static String userName = "admin";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        userName = "Darkness";
 
         //add tool bar
         Toolbar toolbar = findViewById(R.id.tool_bar);

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ShowQuizResultActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/result_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="your name: "/>
+
+    <TextView
+        android:id="@+id/result_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="your Score: "/>
+
+    <TextView
+        android:id="@+id/result_total_seconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:text="time: "/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/back_to_home_page_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back to home page" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/take_new_quiz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="retake the quiz"/>
+
+
+
+
+
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

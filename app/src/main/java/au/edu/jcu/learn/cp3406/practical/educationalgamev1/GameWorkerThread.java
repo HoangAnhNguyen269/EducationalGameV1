@@ -53,7 +53,8 @@ public class GameWorkerThread extends Thread{
     }
 
     public List<QuizQuestion> getQuizQuestions(String subject){
-        cursor = db.query(GameDatabaseHelper.MATH_TABLE,
+        String tableName = GameDatabaseHelper.MATH_TABLE;
+        cursor = db.query(tableName,
                 new String[]{"_id", GameDatabaseHelper.QUESTION_COLUMN,GameDatabaseHelper.ANS_1_COLUMN,GameDatabaseHelper.ANS_2_COLUMN, GameDatabaseHelper.ANS_3_COLUMN, GameDatabaseHelper.ANS_4_COLUMN, GameDatabaseHelper.CORRECT_ANS_NUM_COLUMN},
                 null, null, null, null, null);
         cursor.moveToFirst();
@@ -71,15 +72,6 @@ public class GameWorkerThread extends Thread{
         }
         return quizQuestions;
     }
-
-
-
-
-
-
-
-
-
 
 
 }
