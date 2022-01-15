@@ -2,6 +2,7 @@ package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.NavUtils;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -31,6 +32,7 @@ public class ShowQuizResultActivity extends AppCompatActivity {
     TextView timeView;
     AppCompatButton backToHomeButton;
     AppCompatButton newGameButton;
+    AppCompatButton shareOnTwitter;
 
 
 
@@ -60,8 +62,8 @@ public class ShowQuizResultActivity extends AppCompatActivity {
         backToHomeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ShowQuizResultActivity.this,  MainActivity.class);
-                startActivity(intent);
+                Intent upIntent = NavUtils.getParentActivityIntent(ShowQuizResultActivity.this);
+                startActivity(upIntent);
             }
         });
 
@@ -75,28 +77,25 @@ public class ShowQuizResultActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        shareOnTwitter = findViewById(R.id.share_on_twitter_button);
+        shareOnTwitter.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowQuizResultActivity.this, ShareOnTwitterActivity.class);
+                intent.putExtra("userName", MainActivity.userName);
+                intent.putExtra("subject", subject);
+                float score = totalCorrectQuestion/totalQuestion*10;
+                intent.putExtra("score", score);
+                float avgSeconds = totalSeconds/totalQuestion;
+                intent.putExtra("avgSeconds", avgSeconds);
+                startActivity(intent);
+            }
+        });
 
-
-//        SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(this);
-//        try {
-//            SQLiteDatabase db = gameDatabaseHelper.getReadableDatabase();
-//            Cursor cursor = db.query(GameDatabaseHelper.RESULT_TABLE,
-//                    new String[]{"_id", GameDatabaseHelper.USER_NAME_COLUMN,GameDatabaseHelper.SUBJECT_COLUMN,GameDatabaseHelper.SCORE_COLUMN, GameDatabaseHelper.AVERAGE_SECONDS_COLUMN},
-//                    null, null, null, null, null);
-//            cursor.moveToLast();
-//            Toast toast = Toast.makeText(ShowQuizResultActivity.this, String.valueOf(cursor.getString(1)), Toast.LENGTH_LONG);
-//            toast.show();
-//
-//
-//        } catch(SQLiteException e) {
-//            Toast toasted = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
-//            toasted.show();
-//            Log.i("load successfully?", "not ok");
-//        }
     }
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(ShowQuizResultActivity.this,  MainActivity.class);
-        startActivity(intent);
+        Intent upIntent = NavUtils.getParentActivityIntent(this);
+        startActivity(upIntent);
     }
 }

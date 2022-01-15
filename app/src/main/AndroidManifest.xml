@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="au.edu.jcu.learn.cp3406.practical.educationalgamev1">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -10,12 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EducationalGameV1">
         <activity
+            android:name=".ShareOnTwitterActivity"
+            android:exported="true"/>
+        <activity
             android:name=".HighScoreActivity"
             android:exported="false"
             android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity
             android:name=".ShowQuizResultActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
         <activity
             android:name=".GameActivity"
             android:exported="false" />
