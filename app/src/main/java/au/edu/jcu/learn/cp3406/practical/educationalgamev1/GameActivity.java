@@ -2,6 +2,7 @@ package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.NavUtils;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -18,14 +20,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.seismic.ShakeDetector;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity implements ShakeDetector.Listener{
     final public static String SUBJECT_FINAL_STRING = "selected subject";
     public String BASIC_COMPUTER;
     public String  MATH;
+    boolean enableShaking = MainActivity.enableShaking;
 
     //set list of Question objects
     List<QuizQuestion> quizQuestions = new ArrayList<>();
@@ -73,6 +78,11 @@ public class GameActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        //add sensor manager to shake detector
+        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        ShakeDetector sd = new ShakeDetector(this);
+        sd.start(sensorManager);
 
         BASIC_COMPUTER = getResources().getStringArray(R.array.subjects)[0];
         MATH = getResources().getStringArray(R.array.subjects)[1];
@@ -377,6 +387,22 @@ public class GameActivity extends AppCompatActivity {
                 toast.show();
             }
         }
+    }
+
+    @Override public void hearShake() {
+        if(enableShaking){
+            Intent intent = new Intent(GameActivity.this,
+                    GameActivity.class);
+            intent.putExtra(GameActivity.SUBJECT_FINAL_STRING, subject);
+            startActivity(intent);
+        }
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent upIntent = NavUtils.getParentActivityIntent(this);
+        startActivity(upIntent);
     }
 
 }

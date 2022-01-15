@@ -9,13 +9,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ShowQuizResultActivity extends AppCompatActivity {
+import com.squareup.seismic.ShakeDetector;
+
+public class ShowQuizResultActivity extends AppCompatActivity implements ShakeDetector.Listener{
 
     public static String SUBJECT_STRING="SUBJECT";
     public static String CORRECT_QUESTION_NUM ="CORRECT QUESTION NUMBER";
@@ -34,12 +37,20 @@ public class ShowQuizResultActivity extends AppCompatActivity {
     AppCompatButton newGameButton;
     AppCompatButton shareOnTwitter;
 
+    //check whether shaking is available
+    boolean enableShaking = MainActivity.enableShaking;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_quiz_result);
+
+        //add sensor manager to shake detector
+        SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        ShakeDetector sd = new ShakeDetector(this);
+        sd.start(sensorManager);
 
         subject = (String) getIntent().getExtras().get(SUBJECT_STRING);
         totalCorrectQuestion = (int) getIntent().getExtras().get(CORRECT_QUESTION_NUM);
@@ -91,6 +102,15 @@ public class ShowQuizResultActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+    }
+    @Override public void hearShake() {
+        if(enableShaking){
+            Intent intent = new Intent(ShowQuizResultActivity.this,
+                    GameActivity.class);
+            intent.putExtra(GameActivity.SUBJECT_FINAL_STRING, subject);
+            startActivity(intent);
+        }
 
     }
     @Override
