@@ -14,12 +14,16 @@ import android.widget.SimpleCursorAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameWorkerThread extends Thread{
     private Handler handler, mainHandler;
     private Context context;
 
-    List<QuizQuestion> quizQuestions = new ArrayList<>();;
+
+    List<QuizQuestion> quizQuestions = new ArrayList<>();
+    int numOfQues = MainActivity.numOfQues;
+    boolean enableShufflingQuestions = MainActivity.enableShufflingQuestions;
 
 
     //end the thread if no usage
@@ -78,8 +82,26 @@ public class GameWorkerThread extends Thread{
         }
 
         cursor.close();
-        return quizQuestions;
-    }
 
+        //now we have a complete list of questions
+        //we only returns list of questions based on numOfQues and enableShufflingQuestions
+        List<QuizQuestion> selectedQuizQuestions = new ArrayList<>();
+        if(enableShufflingQuestions){
+            int count =0;
+            while(count <numOfQues){
+                Random rand = new Random();
+                selectedQuizQuestions.add(quizQuestions.remove(rand.nextInt(quizQuestions.size())));
+                count ++;
+            }
+        }else{
+            int count =0;
+            while(count <numOfQues){
+                selectedQuizQuestions.add(quizQuestions.get(count));
+                count ++;
+            }
+        }
+
+        return selectedQuizQuestions;
+    }
 
 }

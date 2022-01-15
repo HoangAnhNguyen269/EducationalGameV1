@@ -4,11 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.squareup.seismic.ShakeDetector;
 
@@ -18,16 +24,20 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
     Button newAttemptButton;
     Button scoreBoardButton;
     Button settingButton;
-    public static String userName = "admin";
 
-    //only set the default value for developing, handle this with setting latter on
-    static boolean enableShaking = true;
+    //define the setting values from the db, therefore other class can refers in this activity without invoke SQLite database
+    public static String userName;
+    public static boolean enableShaking, enableShufflingQuestions;
+    public static int numOfQues,secsPerQues;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        userName = "Darkness";
+
+        //get settings from db
+        getSettingsFromDatabase();
 
         //add sensor manager to shake detector
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -73,6 +83,40 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
 
 
     }
+
+    void getSettingsFromDatabase(){
+
+        SQLiteDatabase db;
+        SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(this);
+        try {
+            db = gameDatabaseHelper.getReadableDatabase();
+            Cursor cursor = db.query(GameDatabaseHelper.SETTING_TABLE, new String[]{"_id", GameDatabaseHelper.SETTING_USER_NAME_COLUMN,GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN,GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN},
+                    null, null, null, null, null );
+            cursor.moveToFirst();
+            cursor.moveToLast(); //we take the last record of setting
+            userName = cursor.getString(1);
+            if(cursor.getInt(2)==1){
+                enableShaking =true;
+            }else{
+                enableShaking =false;
+            }
+            if(cursor.getInt(3) ==1){
+                enableShufflingQuestions=true;
+            }else{
+                enableShufflingQuestions =false;
+            }
+            numOfQues =cursor.getInt(4);
+            secsPerQues =cursor.getInt(5);
+            db.close();
+            cursor.close();
+
+        } catch(SQLiteException e) {
+            Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
+            toast.show();
+            Log.i("Database available?:  ", "No");
+        }
+
+    }
     void startQuizzing(){
         String subject = subjectSpinner.getSelectedItem().toString();
         Intent intent = new Intent(MainActivity.this,
@@ -86,5 +130,13 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
             startQuizzing();
         }
     }
+    @Override
+    protected void onRestart() {
+        //in case the user press back from Setting activity
+        getSettingsFromDatabase();
+        super.onRestart();
+    }
+
+
 
 }

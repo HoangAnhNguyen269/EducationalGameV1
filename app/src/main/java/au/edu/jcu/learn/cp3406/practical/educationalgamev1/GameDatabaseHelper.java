@@ -20,21 +20,29 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
     public static final String MATH_TABLE ="MATH_TABLE";
     public static final String BASIC_COMPUTER_TABLE ="COMPUTER_TABLE";
     public static final String RESULT_TABLE ="RESULT_TABLE";
+    public static final String SETTING_TABLE ="SETTING_TABLE";
 
-    //store the column name
+    //store the column name of result table
     public static final String USER_NAME_COLUMN = "USER_NAME";
     public static final String SUBJECT_COLUMN = "SUBJECT";
     public static final String SCORE_COLUMN = "SCORE";
     public static final String AVERAGE_SECONDS_COLUMN ="AVERAGE_SECONDS";
 
 
-    //store column name of question tables
+    //store column names of question table
     public static final String QUESTION_COLUMN ="QUESTION";
     public static final String ANS_1_COLUMN ="ANS_1";
     public static final String ANS_2_COLUMN ="ANS_2";
     public static final String ANS_3_COLUMN ="ANS_3";
     public static final String ANS_4_COLUMN ="ANS_4";
     public static final String CORRECT_ANS_NUM_COLUMN="CORRECT_ANS_NUM";
+
+    //store column names of setting table
+    public static final String SETTING_USER_NAME_COLUMN = "USER_NAME";
+    public static final String SETTING_ENABLE_SHAKING_COLUMN = "ENABLE_SHAKING";
+    public static final String SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN = "ENABLE_SHUFFLING_QUESTIONS";
+    public static final String SETTING_NUMBER_OF_QUESTIONS_COLUMN = "NUMBER_OF_QUESTIONS";
+    public static final String SETTING_SECONDS_PER_QUESTION_COLUMN = "SECONDS_PER_QUESTION";
 
 
 
@@ -117,13 +125,28 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
             }
 
             //create table that get the result
-
-
             db.execSQL("CREATE TABLE "+ RESULT_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + USER_NAME_COLUMN+" TEXT, "
                     + SUBJECT_COLUMN+" TEXT, "
                     + SCORE_COLUMN+" REAL, "
                     + AVERAGE_SECONDS_COLUMN+" REAL);");
+
+            //create table that save the setting
+            db.execSQL("CREATE TABLE "+ SETTING_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + SETTING_USER_NAME_COLUMN+" TEXT, "
+                    + SETTING_ENABLE_SHAKING_COLUMN +" INTEGER, "
+                    + SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN  +" INTEGER, "
+                    + SETTING_NUMBER_OF_QUESTIONS_COLUMN   +" INTEGER, "
+                    + SETTING_SECONDS_PER_QUESTION_COLUMN+" INTEGER);");
+
+            //set the default setting configuration
+            ContentValues settingValues = new ContentValues();
+            settingValues.put(SETTING_USER_NAME_COLUMN, "admin");
+            settingValues.put(SETTING_ENABLE_SHAKING_COLUMN, 0); //no shaking
+            settingValues.put(SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, 0); //no shuffling
+            settingValues.put(SETTING_NUMBER_OF_QUESTIONS_COLUMN, 20); //20 questions
+            settingValues.put(SETTING_SECONDS_PER_QUESTION_COLUMN, 10); //10 secs per question
+            db.insert(SETTING_TABLE, null, settingValues);
 
 
         }

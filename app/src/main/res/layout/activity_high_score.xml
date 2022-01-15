@@ -32,7 +32,7 @@
                     style="@style/result_row_view"
                     android:text="User name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
                     android:textAllCaps="true"
                     />
@@ -42,7 +42,7 @@
                     android:textAllCaps="true"
                     android:text="subject"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     style="@style/result_row_view"
                     android:layout_weight="1"/>
                 <TextView
@@ -50,7 +50,7 @@
                     android:textAllCaps="true"
                     android:text="score"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     style="@style/result_row_view"
                     android:layout_weight="1"/>
 
@@ -59,7 +59,7 @@
                     android:textAllCaps="true"
                     android:text="seconds/question"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     style="@style/result_row_view"
                     android:layout_weight="1"/>
 

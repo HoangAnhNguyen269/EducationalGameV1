@@ -10,6 +10,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
@@ -27,7 +28,8 @@
             android:text="User name:  Michael Jackson"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:layout_margin="20dp"/>
+            android:layout_margin="20dp"
+            />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/enable_shaking_switch"
@@ -36,7 +38,8 @@
             android:text="Shake to start/restart quiz"
             android:gravity="start"
             android:padding="10dp"
-            android:textSize="15sp"/>
+            android:textSize="15sp"
+            android:checked="true"/>
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/shuffle_questions_switch"
