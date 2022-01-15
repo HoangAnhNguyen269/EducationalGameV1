@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import twitter4j.Query;
 import twitter4j.QueryResult;
@@ -62,7 +63,7 @@ public class ShareOnTwitterActivity extends AppCompatActivity {
         score = getIntent().getFloatExtra("score",6.0f);
         avgSeconds = getIntent().getFloatExtra("avgSeconds", 5.5f);
 
-        message = "Congratulation! The student: "+ userName+" has achieved the score: "+ String.valueOf(score)+" with average "+ String.valueOf(avgSeconds)+ " seconds per question for "+ subject+" subject!! "+ hashtag;
+        message = "Congratulation! The student: "+ userName+" has achieved the score: "+ String.format(Locale.getDefault(),"%.2f", score)+" with average "+ String.format(Locale.getDefault(),"%.2f", avgSeconds)+ " seconds per question for "+ subject+" subject!! "+ hashtag;
         tweetMessageView = findViewById(R.id.tweet_message_view);
         tweetMessageView.setText("\""+message+"\"");
 

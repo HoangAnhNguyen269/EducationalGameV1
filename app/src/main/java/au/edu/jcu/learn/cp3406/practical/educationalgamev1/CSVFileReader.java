@@ -31,7 +31,8 @@ public class CSVFileReader {
         try{
             while((line=reader.readLine()) != null){
                 rowNum ++;
-                String[] tokens = line.split(",");
+                //the questions are separated by ;
+                String[] tokens = line.split(";");
                 QuizQuestion quizQuestion = new QuizQuestion();
                 quizQuestion.setQuestion(tokens[0]);
                 quizQuestion.setAns1(tokens[1]);

@@ -94,8 +94,30 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
                 insertQuiz(db,MATH_TABLE,question,ans1,ans2,ans3,ans4,correctAns);
             }
 
+            //import questions to basic computer table
+            db.execSQL("CREATE TABLE "+ BASIC_COMPUTER_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                    + QUESTION_COLUMN+" TEXT, "
+                    + ANS_1_COLUMN+" TEXT, "
+                    + ANS_2_COLUMN+" TEXT, "
+                    + ANS_3_COLUMN+" TEXT, "
+                    + ANS_4_COLUMN+" TEXT, "
+                    + CORRECT_ANS_NUM_COLUMN+" INTEGER);");
+            InputStream basicComputerTableIS = GameActivity.computerCsvInputStream;
+            CSVFileReader computerFileReader = new CSVFileReader(basicComputerTableIS);
+            quizQuestionList = computerFileReader.getQuizQuestions();
+            for (int i = 0; i < mathFileReader.getRowNum(); i++) {
+                QuizQuestion quizQuestion = quizQuestionList.get(i);
+                String question = quizQuestion.getQuestion();
+                String ans1 = quizQuestion.getAns1();
+                String ans2 = quizQuestion.getAns2();
+                String ans3 = quizQuestion.getAns3();
+                String ans4 = quizQuestion.getAns4();
+                int correctAns = quizQuestion.getCorrectAnsNum();
+                insertQuiz(db,BASIC_COMPUTER_TABLE,question,ans1,ans2,ans3,ans4,correctAns);
+            }
+
             //create table that get the result
-//            //this table here has errors
+
 
             db.execSQL("CREATE TABLE "+ RESULT_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + USER_NAME_COLUMN+" TEXT, "
@@ -103,13 +125,6 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
                     + SCORE_COLUMN+" REAL, "
                     + AVERAGE_SECONDS_COLUMN+" REAL);");
 
-//                        db.execSQL("CREATE TABLE "+ BASIC_COMPUTER_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
-//                    + QUESTION_COLUMN+" TEXT, "
-//                    + ANS_1_COLUMN+" TEXT, "
-//                    + ANS_2_COLUMN+" TEXT, "
-//                    + ANS_3_COLUMN+" TEXT, "
-//                    + ANS_4_COLUMN+" TEXT, "
-//                    + CORRECT_ANS_NUM_COLUMN+" INTEGER);");
 
         }
 

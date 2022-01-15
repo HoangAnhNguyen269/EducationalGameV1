@@ -61,6 +61,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     private SQLiteDatabase db;
     private Cursor cursor;
     public static InputStream mathcsvInputStream;
+    public static InputStream computerCsvInputStream;
 
     //define WorkerThread
     private GameWorkerThread gameWorkerThread;
@@ -120,6 +121,9 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
 
         //load the csv file which is the input for the initial database
         mathcsvInputStream = getResources().openRawResource(R.raw.math_questions_data);
+        computerCsvInputStream =getResources().openRawResource(R.raw.basic_computer_questions_data);
+
+
         SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(this);
         try {
             db = gameDatabaseHelper.getReadableDatabase();

@@ -13,6 +13,8 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 public class HighScoreActivity extends AppCompatActivity {
     SQLiteDatabase db;
     Cursor cursor;
@@ -30,7 +32,7 @@ public class HighScoreActivity extends AppCompatActivity {
                     null, null, null, null, GameDatabaseHelper.SCORE_COLUMN +" DESC" );
              displayTopResult();
         }catch(Exception e) {
-            Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "There is no records yet", Toast.LENGTH_SHORT);
             toast.show();
             Log.i("can load", "not ok");
         }
@@ -56,7 +58,7 @@ public class HighScoreActivity extends AppCompatActivity {
                 Log.i("Score", String.valueOf(score));
                 Log.i("User", userName);
                 Log.i("Subject", subject);
-                Log.i("avg second", String.valueOf(avgSeconds));
+                Log.i("avg second", String.format(Locale.getDefault(),"%.2f", avgSeconds));
 
                 //inflate the fragment
                 ResultRowFragment rowFragment = new ResultRowFragment(userName, subject, score,avgSeconds);

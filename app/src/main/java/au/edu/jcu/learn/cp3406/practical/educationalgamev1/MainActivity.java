@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this,
                         SettingActivity.class);
-                intent.putExtra("Hello","Hello");
                 startActivity(intent);
             }
         });

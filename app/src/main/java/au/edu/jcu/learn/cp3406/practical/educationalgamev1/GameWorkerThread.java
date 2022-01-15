@@ -53,7 +53,13 @@ public class GameWorkerThread extends Thread{
     }
 
     public List<QuizQuestion> getQuizQuestions(String subject){
-        String tableName = GameDatabaseHelper.MATH_TABLE;
+        String tableName;
+        if(subject.equals("Basic Computer")){
+            tableName = GameDatabaseHelper.BASIC_COMPUTER_TABLE;
+        } else{
+            tableName = GameDatabaseHelper.MATH_TABLE; //change later
+        }
+
         cursor = db.query(tableName,
                 new String[]{"_id", GameDatabaseHelper.QUESTION_COLUMN,GameDatabaseHelper.ANS_1_COLUMN,GameDatabaseHelper.ANS_2_COLUMN, GameDatabaseHelper.ANS_3_COLUMN, GameDatabaseHelper.ANS_4_COLUMN, GameDatabaseHelper.CORRECT_ANS_NUM_COLUMN},
                 null, null, null, null, null);
@@ -70,6 +76,8 @@ public class GameWorkerThread extends Thread{
 
             cursor.moveToNext();
         }
+
+        cursor.close();
         return quizQuestions;
     }
 

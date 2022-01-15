@@ -66,7 +66,7 @@ public class ShowQuizResultActivity extends AppCompatActivity implements ShakeDe
         yourScoreView.setText("your score: "+String.valueOf(totalCorrectQuestion)+"/"+String.valueOf(totalQuestion));
 
         timeView = findViewById(R.id.result_total_seconds);
-        timeView.setText("time: "+ String.valueOf(totalSeconds));
+        timeView.setText("time: "+ String.valueOf(totalSeconds)+ " seconds");
 
 
         backToHomeButton = findViewById(R.id.back_to_home_page_btn);
@@ -95,9 +95,9 @@ public class ShowQuizResultActivity extends AppCompatActivity implements ShakeDe
                 Intent intent = new Intent(ShowQuizResultActivity.this, ShareOnTwitterActivity.class);
                 intent.putExtra("userName", MainActivity.userName);
                 intent.putExtra("subject", subject);
-                float score = totalCorrectQuestion/totalQuestion*10;
+                float score = (float) totalCorrectQuestion/totalQuestion*10;
                 intent.putExtra("score", score);
-                float avgSeconds = totalSeconds/totalQuestion;
+                float avgSeconds = (float) totalSeconds/totalQuestion;
                 intent.putExtra("avgSeconds", avgSeconds);
                 startActivity(intent);
             }

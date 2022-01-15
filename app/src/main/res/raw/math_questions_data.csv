@@ -1,2 +1,20 @@
-﻿what is SOH CAH TOA,sine = Opposite x Hypotenuse &  cosine = Adjacent x Hypotenuse &  tangent = Opposite x Adjacent,sine = Opposite/Hypotenuse &  cosine = Adjacent/Hypotenuse &  tangent = Opposite/Adjacent,sine = Opposite x Hypotenuse &  cosine = Area x Hypotenuse &  tangent = Opposite x Area,sine = Opposite/Height &  cosine = Adjacent/Height &  tangent = Opposite/Adjacent,2
-question 1,a,b,c,d,4
+what is SOH CAH TOA;sine = Opposite x Hypotenuse &  cosine = Adjacent x Hypotenuse &  tangent = Opposite x Adjacent;sine = Opposite/Hypotenuse &  cosine = Adjacent/Hypotenuse &  tangent = Opposite/Adjacent;sine = Opposite x Hypotenuse &  cosine = Area x Hypotenuse &  tangent = Opposite x Area;sine = Opposite/Height &  cosine = Adjacent/Height &  tangent = Opposite/Adjacent;2
+What is the solution to the system x + y = 5 and 3x - y = 3?;"(-2, -3)";"(-2, 3)";"(2, -3)";"(2, 3)";4
+What is (6x^3y^15)/(3xy)?;2xy^15;2x^3y;2xy;2x^2y^14;4
+How many ways can a group of 12 choose a committee of 9?;21;108;220;200;3
+What is the cosine of 45 degrees (to 4 decimal places)?;1;0.5;0.7071;0;3
+What is the least common multiple of 12 and 16?;32;16;24;48;4
+Which expression represents the use of the distributive property on 3(a + b)?;A + 3b;3a + b;3a + 3b;3ab;3
+"What is the greatest common factor of 9x, 3y, and 12z?";3x;3;3y;Xyz;2
+What is the slope of y = -4x + 1?;1;-4;4;-1;2
+What is the solution of 4x - 7(x - 1) > 3(x + 1)?;X > -2/3;X > 2/3;X < -2/3;X < 2/3;4
+What kind of slope does the line 3x - 2y = 6 have?;Zero;Undefined;Positive;Negative;3
+What is the y-intercept of 4x + 2y = -8?;"(-2, 0)";"(2, 0)";"(0, -4)";"(0, 4)";3
+"What is the midpoint of the line segment with endpoints at (-1, 1) and (7, -3)?";"(3, -1)";"(6,3)";"(5,1)";"(1,-3)";1
+What do we call the lines connecting the foci in an ellipse?;Ellipsoid;Vertex;Major Axis;Minor Axis;3
+"If two graphed equations produce the same line, what do we call them?";Inconsistent;Independent;Consistent;Coincident;4
+What is tan 18 degrees?;-0.3249;3249;0.3249;-3249;3
+What equation can be written given a slope and a y-intercept?;Point-Slope Form;Horizontal;Slope-Intercept Form;Vertical;3
+What is the square root of 28 in simplified form?;Square Root 14;2 Times The Square Root of 7;7 Times The Square Root of 2;Square Root 9;2
+"What is the midpoint of the line segment with endpoints at (-1, 1) and (7, -3)?";"(3, -1)";"(6,3)";"(5,1)";"(1,-3)";1
+Which on of these is the Pythagorean Theorem? ;a^2 +b^2 =c^2;a^2 +b^2 =2c;2a+2b =2c;a +b =c^2;1

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 public class ResultRowFragment extends Fragment {
 
     private String userName;
@@ -61,10 +63,10 @@ public class ResultRowFragment extends Fragment {
             subjectView.setText(subject);
 
             scoreView = (TextView)  layout.findViewById(R.id.result_row_score);
-            scoreView.setText(String.valueOf(score));
+            scoreView.setText(String.format(Locale.getDefault(),"%.2f", score));
 
             avgSecondsView = (TextView) layout.findViewById(R.id.result_row_avg_seconds);
-            avgSecondsView.setText(String.valueOf(avgSeconds));
+            avgSecondsView.setText(String.format(Locale.getDefault(),"%.2f", avgSeconds));
         }
 
     }
