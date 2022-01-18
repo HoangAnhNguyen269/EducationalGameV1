@@ -88,7 +88,7 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
                     + ANS_4_COLUMN+" TEXT, "
                     + CORRECT_ANS_NUM_COLUMN+" INTEGER);");
 
-            InputStream mathTableIS = GameActivity.mathcsvInputStream;
+            InputStream mathTableIS = MainActivity.mathcsvInputStream;
             CSVFileReader mathFileReader = new CSVFileReader(mathTableIS);
             List<QuizQuestion> quizQuestionList = mathFileReader.getQuizQuestions();
             for (int i = 0; i < mathFileReader.getRowNum(); i++) {
@@ -110,7 +110,7 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
                     + ANS_3_COLUMN+" TEXT, "
                     + ANS_4_COLUMN+" TEXT, "
                     + CORRECT_ANS_NUM_COLUMN+" INTEGER);");
-            InputStream basicComputerTableIS = GameActivity.computerCsvInputStream;
+            InputStream basicComputerTableIS = MainActivity.computerCsvInputStream;
             CSVFileReader computerFileReader = new CSVFileReader(basicComputerTableIS);
             quizQuestionList = computerFileReader.getQuizQuestions();
             for (int i = 0; i < mathFileReader.getRowNum(); i++) {
@@ -124,7 +124,7 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
                 insertQuiz(db,BASIC_COMPUTER_TABLE,question,ans1,ans2,ans3,ans4,correctAns);
             }
 
-            //create table that get the result
+//            create table that get the result
             db.execSQL("CREATE TABLE "+ RESULT_TABLE +" (_id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + USER_NAME_COLUMN+" TEXT, "
                     + SUBJECT_COLUMN+" TEXT, "

@@ -1,8 +1,10 @@
 package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
@@ -27,12 +29,15 @@ public class HighScoreActivity extends AppCompatActivity {
 
         try {
             SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(this);
-             db = gameDatabaseHelper.getReadableDatabase();
-             cursor = db.query(GameDatabaseHelper.RESULT_TABLE, new String[]{"_id", GameDatabaseHelper.USER_NAME_COLUMN,GameDatabaseHelper.SUBJECT_COLUMN,GameDatabaseHelper.SCORE_COLUMN, GameDatabaseHelper.AVERAGE_SECONDS_COLUMN},
+            db = gameDatabaseHelper.getReadableDatabase();
+            cursor = db.query(GameDatabaseHelper.RESULT_TABLE, new String[]{"_id", GameDatabaseHelper.USER_NAME_COLUMN,GameDatabaseHelper.SUBJECT_COLUMN,GameDatabaseHelper.SCORE_COLUMN, GameDatabaseHelper.AVERAGE_SECONDS_COLUMN},
                     null, null, null, null, GameDatabaseHelper.SCORE_COLUMN +" DESC" );
+//            Toast toast = Toast.makeText(this, String.valueOf(cursor.getCount()), Toast.LENGTH_SHORT);
+//            toast.show();
              displayTopResult();
+
         }catch(Exception e) {
-            Toast toast = Toast.makeText(this, "There is no records yet", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "The database is unavailable", Toast.LENGTH_SHORT);
             toast.show();
             Log.i("can load", "not ok");
         }
@@ -60,13 +65,13 @@ public class HighScoreActivity extends AppCompatActivity {
                 Log.i("Subject", subject);
                 Log.i("avg second", String.format(Locale.getDefault(),"%.2f", avgSeconds));
 
-                //inflate the fragment
+//                inflate the fragment
                 ResultRowFragment rowFragment = new ResultRowFragment(userName, subject, score,avgSeconds);
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.add(R.id.result_table,rowFragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
-                //add
+
                 cursor.moveToNext();
             }
 
@@ -75,8 +80,10 @@ public class HighScoreActivity extends AppCompatActivity {
 
     @Override
     public void onDestroy(){
-        if(db!= null && cursor!= null){
+        if(db!= null ){
             db.close();
+        }
+        if(cursor!= null){
             cursor.close();
         }
         super.onDestroy();
@@ -94,6 +101,12 @@ public class HighScoreActivity extends AppCompatActivity {
         cursor = newCursor;
         displayTopResult();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent upIntent = NavUtils.getParentActivityIntent(this);
+        startActivity(upIntent);
     }
 
 }

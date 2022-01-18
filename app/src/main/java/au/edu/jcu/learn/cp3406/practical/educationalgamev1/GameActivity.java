@@ -198,12 +198,12 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         stopwatch.onClickStop();
         totalSeconds += (stopwatch.settingSeconds-stopwatch.seconds);
         if(selectedAns == timeUpAns){
-            Toast.makeText(GameActivity.this, "Run out of time", Toast.LENGTH_LONG).show();
+//            Toast.makeText(GameActivity.this, "Run out of time", Toast.LENGTH_LONG).show();
         } else if(selectedAns== quizQuestions.get(currentQuestion).getCorrectAnsNum()){
-            Toast.makeText(GameActivity.this, "Correct", Toast.LENGTH_LONG).show();
+//            Toast.makeText(GameActivity.this, "Correct", Toast.LENGTH_LONG).show();
             totalCorrectAns ++;
         } else{
-            Toast.makeText(GameActivity.this, "Wrong", Toast.LENGTH_LONG).show();
+//            Toast.makeText(GameActivity.this, "Wrong", Toast.LENGTH_LONG).show();
         }
         displayResult();
         stopwatch.finish = false;
@@ -328,7 +328,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     @Override
     public void onDestroy(){
         super.onDestroy();
-        db.close();
+        if(db !=null){db.close();}
         gameWorkerThread.interrupt();
         //prevent potential memory leak
         if(updateResultTask != null){

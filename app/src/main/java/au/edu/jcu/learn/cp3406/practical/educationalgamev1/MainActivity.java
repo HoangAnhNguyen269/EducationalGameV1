@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.squareup.seismic.ShakeDetector;
 
+import java.io.InputStream;
+
 public class MainActivity extends AppCompatActivity implements ShakeDetector.Listener{
 
     Spinner subjectSpinner;
@@ -26,9 +28,12 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
     Button settingButton;
 
     //define the setting values from the db, therefore other class can refers in this activity without invoke SQLite database
-    public static String userName;
-    public static boolean enableShaking, enableShufflingQuestions;
-    public static int numOfQues,secsPerQues;
+    public static String userName="hahah";
+    public static boolean enableShaking =true, enableShufflingQuestions = true;
+    public static int numOfQues=5,secsPerQues;
+
+    public static InputStream mathcsvInputStream;
+    public static InputStream computerCsvInputStream;
 
 
     @Override
@@ -36,8 +41,14 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //load the csv file which is the input for the initial database
+        mathcsvInputStream = getResources().openRawResource(R.raw.math_questions_data);
+        computerCsvInputStream =getResources().openRawResource(R.raw.basic_computer_questions_data);
+
+
         //get settings from db
         getSettingsFromDatabase();
+
 
         //add sensor manager to shake detector
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -86,29 +97,34 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
 
     void getSettingsFromDatabase(){
 
-        SQLiteDatabase db;
-        SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(this);
         try {
+            SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(MainActivity.this);
+            SQLiteDatabase db;
             db = gameDatabaseHelper.getReadableDatabase();
             Cursor cursor = db.query(GameDatabaseHelper.SETTING_TABLE, new String[]{"_id", GameDatabaseHelper.SETTING_USER_NAME_COLUMN,GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN,GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN},
                     null, null, null, null, null );
             cursor.moveToFirst();
             cursor.moveToLast(); //we take the last record of setting
             userName = cursor.getString(1);
+
             if(cursor.getInt(2)==1){
                 enableShaking =true;
             }else{
                 enableShaking =false;
             }
+
+
             if(cursor.getInt(3) ==1){
                 enableShufflingQuestions=true;
             }else{
                 enableShufflingQuestions =false;
             }
+
             numOfQues =cursor.getInt(4);
             secsPerQues =cursor.getInt(5);
             db.close();
             cursor.close();
+
 
         } catch(SQLiteException e) {
             Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
@@ -136,6 +152,19 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
         getSettingsFromDatabase();
         super.onRestart();
     }
+
+    @Override
+    public void onBackPressed() {
+        //still has error here, cant fix
+            //add press back twice to exit
+        //https://www.geeksforgeeks.org/how-to-implement-press-back-again-to-exit-in-android/
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+
+    }
+
 
 
 
