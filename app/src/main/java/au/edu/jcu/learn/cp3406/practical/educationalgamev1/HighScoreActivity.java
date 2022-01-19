@@ -11,7 +11,9 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,11 +22,19 @@ import java.util.Locale;
 public class HighScoreActivity extends AppCompatActivity {
     SQLiteDatabase db;
     Cursor cursor;
+    ImageView backHomeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
+        backHomeBtn = findViewById(R.id.high_score_back_to_main_btn);
+        backHomeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
         try {
@@ -105,8 +115,7 @@ public class HighScoreActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent upIntent = NavUtils.getParentActivityIntent(this);
-        startActivity(upIntent);
+       finish();
     }
 
 }

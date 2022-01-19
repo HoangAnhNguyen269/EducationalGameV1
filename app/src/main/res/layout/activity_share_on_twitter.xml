@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/tweet_message_view"
         android:layout_margin="10dp"
-        android:textColor="@color/black"
+        style="@style/setting_row"
         android:textSize="15sp"/>
 
     <androidx.appcompat.widget.AppCompatButton

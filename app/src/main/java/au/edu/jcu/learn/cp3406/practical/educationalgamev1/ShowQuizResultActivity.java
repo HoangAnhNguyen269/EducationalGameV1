@@ -13,6 +13,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,8 +34,8 @@ public class ShowQuizResultActivity extends AppCompatActivity implements ShakeDe
     TextView yourNameView;
     TextView yourScoreView;
     TextView timeView;
-    AppCompatButton backToHomeButton;
-    AppCompatButton newGameButton;
+    Button backToHomeButton;
+    Button newGameButton;
     AppCompatButton shareOnTwitter;
 
     //check whether shaking is available
@@ -60,13 +61,13 @@ public class ShowQuizResultActivity extends AppCompatActivity implements ShakeDe
 //        toast.show();
 
         yourNameView = findViewById(R.id.result_user_name);
-        yourNameView.setText("your name: "+MainActivity.userName);
+        yourNameView.setText("Your name: "+MainActivity.userName);
 
         yourScoreView =findViewById(R.id.result_score);
-        yourScoreView.setText("your score: "+String.valueOf(totalCorrectQuestion)+"/"+String.valueOf(totalQuestion));
+        yourScoreView.setText("Your score: "+String.valueOf(totalCorrectQuestion)+"/"+String.valueOf(totalQuestion));
 
         timeView = findViewById(R.id.result_total_seconds);
-        timeView.setText("time: "+ String.valueOf(totalSeconds)+ " seconds");
+        timeView.setText("Time: "+ String.valueOf(totalSeconds)+ " seconds");
 
 
         backToHomeButton = findViewById(R.id.back_to_home_page_btn);

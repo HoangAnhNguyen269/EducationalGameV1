@@ -178,10 +178,15 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
         //still has error here, cant fix
             //add press back twice to exit
         //https://www.geeksforgeeks.org/how-to-implement-press-back-again-to-exit-in-android/
+
+        //one way
         Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
+//
+//        //second way
+//        finish();
 
     }
 

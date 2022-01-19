@@ -6,46 +6,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ShowQuizResultActivity"
+    android:gravity="center"
     android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/result_user_name"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="your name: "/>
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/like_image"
+            android:layout_marginEnd="10dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginStart="10dp"
+            >
+            <TextView
+                android:id="@+id/result_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/setting_row"
+                android:layout_marginTop="15dp"
+                android:textSize="25sp"
+                android:text="Your name: "/>
 
-    <TextView
-        android:id="@+id/result_score"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="your Score: "/>
+            <TextView
+                android:id="@+id/result_score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/setting_row"
+                android:layout_marginTop="15dp"
+                android:textSize="25sp"
+                android:text="Your Score: "/>
 
-    <TextView
-        android:id="@+id/result_total_seconds"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:text="time: "/>
+            <TextView
+                android:id="@+id/result_total_seconds"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/setting_row"
+                android:layout_marginTop="15dp"
+                android:textSize="25sp"
+                android:text="time: "/>
+        </LinearLayout>
+    </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
+
+
+
+    <Button
         android:id="@+id/back_to_home_page_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Back to home page" />
+        android:text="Back to home page"
+        android:layout_margin="15dp"
+        />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <Button
         android:id="@+id/take_new_quiz"
-        android:layout_width="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="retake the quiz"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/share_on_twitter_button"
-        android:layout_width="wrap_content"
+        android:layout_margin="15dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:text="Share result on twitter"/>
+        android:text="Share result on twitter"
+        android:background="@drawable/round_blue_see_other_tweets_button"
+        android:textColor="@color/white"/>
 
 
 
