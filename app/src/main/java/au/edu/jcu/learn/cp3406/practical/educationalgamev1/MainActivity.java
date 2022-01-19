@@ -13,12 +13,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.squareup.seismic.ShakeDetector;
 
 import java.io.InputStream;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements ShakeDetector.Listener{
 
@@ -55,22 +57,27 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
         ShakeDetector sd = new ShakeDetector(this);
         sd.start(sensorManager);
 
-        //add tool bar
-        Toolbar toolbar = findViewById(R.id.tool_bar);
-        setSupportActionBar(toolbar);
+//        //add tool bar
+//        Toolbar toolbar = findViewById(R.id.tool_bar);
+//        setSupportActionBar(toolbar);
 
-
-        //match the subject to their View
-        subjectSpinner = findViewById(R.id.subject_spinner);
-        newAttemptButton = findViewById(R.id.new_attempt);
-        //set up the listener for attempt button
-        newAttemptButton.setOnClickListener(new View.OnClickListener(){
-
+        //2 buttons that can start the quiz
+        LinearLayout basicComputerBtn = findViewById(R.id.basic_computer_quiz_btn);
+        basicComputerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startQuizzing();
+                startQuizzing(getResources().getStringArray(R.array.subjects)[0]);
             }
         });
+
+        LinearLayout mathBtn = findViewById(R.id.math_quiz_btn);
+        mathBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startQuizzing(getResources().getStringArray(R.array.subjects)[1]);
+            }
+        });
+
         scoreBoardButton = findViewById(R.id.score_board);
         scoreBoardButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +141,20 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
 
     }
     void startQuizzing(){
-        String subject = subjectSpinner.getSelectedItem().toString();
+        //start the quiz randomly
+        Random rand = new Random();
+        String subject;
+        if(rand.nextInt(2)==1){
+            subject = getResources().getStringArray(R.array.subjects)[0];
+        } else{
+            subject = getResources().getStringArray(R.array.subjects)[1];
+        }
+        Intent intent = new Intent(MainActivity.this,
+                GameActivity.class);
+        intent.putExtra(GameActivity.SUBJECT_FINAL_STRING, subject);
+        startActivity(intent);
+    }
+    void startQuizzing(String subject){
         Intent intent = new Intent(MainActivity.this,
                 GameActivity.class);
         intent.putExtra(GameActivity.SUBJECT_FINAL_STRING, subject);

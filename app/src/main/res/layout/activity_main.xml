@@ -10,10 +10,7 @@
     android:gravity="center_horizontal"
     >
 
-    <include
-        android:id="@+id/tool_bar"
-        layout="@layout/toolbar_main"
-        app:layout_constraintStart_toStartOf="parent" />
+
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
@@ -21,42 +18,83 @@
         android:gravity="center"
         android:orientation="vertical"
        >
-
-        <TextView
-            style="@style/headline"
-            android:id="@+id/high_score_label"
-            android:layout_width="wrap_content"
+        <ImageView
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="High Score" />
+            android:src="@drawable/quiz_main_icon"
+            android:layout_marginTop="10dp"
+            android:adjustViewBounds="true"
+
+            />
+
 
         <TextView
-            style="@style/headline_content"
-            android:id="@+id/high_score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="100" />
-
-        <TextView
-            style="@style/headline"
             android:id="@+id/choose_subject_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose Subject" />
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_gravity="start"
+            android:text="choose a subject"
+            android:textAllCaps="true"
+            android:textSize="18sp"/>
 
-
-        <Spinner
-            android:id="@+id/subject_spinner"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/subjects"
-            android:minHeight="48dp"
-            android:textAlignment="center" />
+            android:orientation="horizontal"
+            android:layout_margin="10dp"
+            >
+            <LinearLayout
+                android:id="@+id/basic_computer_quiz_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="20dp"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:background="@drawable/main_round_back_subject_icon_10">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/basic_computer_icon"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Basic Computer"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"/>
 
-        <Button
-            android:id="@+id/new_attempt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Attempt"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/math_quiz_btn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="20dp"
+                android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:background="@drawable/main_round_back_subject_icon_10">
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/main_math_icon"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Math"
+                    android:textSize="15sp"
+                    android:textColor="@color/white"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/score_board"

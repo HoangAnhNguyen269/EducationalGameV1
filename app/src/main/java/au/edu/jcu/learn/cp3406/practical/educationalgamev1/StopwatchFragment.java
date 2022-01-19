@@ -19,7 +19,7 @@ import java.util.Locale;
  */
 public class StopwatchFragment extends Fragment implements View.OnClickListener {
     //Number of seconds displayed on the stopwatch.
-    public int settingSeconds =10;
+    public int settingSeconds =MainActivity.secsPerQues;
     public int seconds = settingSeconds;
     //Is the stopwatch running?
     private boolean running;

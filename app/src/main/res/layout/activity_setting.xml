@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="200dp"
-                android:text="Seconds questions: 10"
+                android:text="Seconds per question: 10"
                 android:textColor="@color/black"/>
             <SeekBar
                 android:layout_width="match_parent"

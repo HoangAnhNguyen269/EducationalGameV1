@@ -190,7 +190,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         numOfQuesSeekbar.setProgress(numOfQues);
 
         //secs per question
-        secsPerQuesSeekbarLabel.setText("Number of questions: "+secsPerQues);
+        secsPerQuesSeekbarLabel.setText("Seconds per question: "+secsPerQues);
         secsPerQuesSeekbar.setProgress(secsPerQues);
 
     }

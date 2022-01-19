@@ -11,13 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:theme="@style/quiz_game_toolbar" >
+
         <ImageView
             android:id="@+id/back_to_main_btn"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="15dp"
-            android:src="@drawable/baseline_arrow_back_white_20"/>
+            android:src="@drawable/baseline_arrow_back_white_20" />
 
         <TextView
             android:id="@+id/subject_name"

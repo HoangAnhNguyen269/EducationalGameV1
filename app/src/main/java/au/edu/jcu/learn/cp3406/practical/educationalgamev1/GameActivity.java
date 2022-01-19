@@ -115,6 +115,16 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
             }
         });
 
+        //back to main button
+        ImageView backToMainBtn = findViewById(R.id.back_to_main_btn);
+        backToMainBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+
         //get the selected subject
         subject = (String) getIntent().getExtras().get(SUBJECT_FINAL_STRING);
         subjectTextView.setText(subject);
