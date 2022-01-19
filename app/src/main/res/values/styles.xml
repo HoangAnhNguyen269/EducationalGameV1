@@ -17,6 +17,8 @@
         <item name ="android:gravity">center</item>
         <item name="android:background">@drawable/border</item>
     </style>
+    <style name="setting_row" parent="TextAppearance.AppCompat.Headline">
+    </style>
 
 
 </resources>

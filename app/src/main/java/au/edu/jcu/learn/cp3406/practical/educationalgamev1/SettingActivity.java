@@ -12,7 +12,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +32,9 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     SeekBar secsPerQuesSeekbar;
     TextView secsPerQuesSeekbarLabel;
 
-    AppCompatButton settingSaveButton;
+    Button settingSaveButton;
+
+    ImageView backMainBtn;
 
 
     String userName;
@@ -130,6 +134,14 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             @Override
             public void onClick(View v) {
                 saveSettingOnDataBase();
+            }
+        });
+        //back btn
+        backMainBtn = findViewById(R.id.setting_back_to_main_btn);
+        backMainBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
             }
         });
 

@@ -12,13 +12,45 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:theme="@style/quiz_game_toolbar" >
 
-        <TextView
-            style="@style/headline"
-            android:id="@+id/high_score_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Setting" />
+            <ImageView
+                android:id="@+id/setting_back_to_main_btn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:src="@drawable/baseline_arrow_back_white_20" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Setting"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="15dp"
+                    android:src="@drawable/setting_setting_icon" />
+            </LinearLayout>
+
+
+
+        </RelativeLayout>
+
 
         <TextView
             android:id="@+id/setting_user_name"
@@ -26,9 +58,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="User name:  Michael Jackson"
-            android:textColor="@color/black"
             android:textSize="20dp"
-            android:layout_margin="20dp"
+            android:layout_margin="15dp"
+            style="@style/setting_row"
             />
 
         <androidx.appcompat.widget.SwitchCompat
@@ -39,7 +71,8 @@
             android:gravity="start"
             android:padding="10dp"
             android:textSize="15sp"
-            android:checked="true"/>
+            android:checked="true"
+            />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/shuffle_questions_switch"
@@ -60,7 +93,9 @@
                 android:layout_height="wrap_content"
                 android:text="Number of questions: 10"
                 android:minWidth="200dp"
-                android:textColor="@color/black"/>
+                style="@style/setting_row"
+                android:textSize="15sp"
+                />
             <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,12 +111,14 @@
             android:orientation="horizontal"
             android:layout_margin="10dp">
             <TextView
+                style="@style/setting_row"
+                android:textSize="15sp"
                 android:id="@+id/secs_per_ques_seekbar_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:minWidth="200dp"
                 android:text="Seconds per question: 10"
-                android:textColor="@color/black"/>
+                />
             <SeekBar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -91,7 +128,7 @@
                 android:id="@+id/secs_per_ques_seekbar"
                 />
         </androidx.appcompat.widget.LinearLayoutCompat>
-        <androidx.appcompat.widget.AppCompatButton
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:id="@+id/setting_save_button"
@@ -99,7 +136,6 @@
             android:layout_gravity="center"
             android:textAllCaps="true"
             android:text="Save"
-            android:background="@drawable/round_green_next_button"
             android:textColor="@color/white"
             />
 
