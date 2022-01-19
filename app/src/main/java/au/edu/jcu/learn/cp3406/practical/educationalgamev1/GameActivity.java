@@ -14,6 +14,7 @@ import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -136,10 +137,10 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
 
         SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(this);
         try {
-            db = gameDatabaseHelper.getReadableDatabase();
-            gameWorkerThread.setDb(db);
-            quizQuestions = gameWorkerThread.getQuizQuestions(subject);
             if(savedInstanceState ==null){
+                db = gameDatabaseHelper.getReadableDatabase();
+                gameWorkerThread.setDb(db);
+                quizQuestions = gameWorkerThread.getQuizQuestions(subject);
                 currentQuestion =0;
                 startCurrentQuestion();
             }else{
@@ -147,7 +148,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
                 currentQuestion = savedInstanceState.getInt("currentQuestion");
                 totalCorrectAns = savedInstanceState.getInt("totalCorrectAns");
                 totalSeconds = savedInstanceState.getInt("totalSeconds");
-
+                quizQuestions= savedInstanceState.<QuizQuestion>getParcelableArrayList("quizQuestions");
                 if(isShowingResult ==true){
                     selectedAns = savedInstanceState.getInt("selectedAns");
                     displayResult();
@@ -172,6 +173,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         savedInstanceState.putInt("selectedAns",selectedAns);
         savedInstanceState.putInt("totalCorrectAns",totalCorrectAns);
         savedInstanceState.putInt("totalSeconds",totalSeconds);
+      savedInstanceState.putParcelableArrayList("quizQuestions", (ArrayList<? extends Parcelable>) quizQuestions);
 
     }
 
