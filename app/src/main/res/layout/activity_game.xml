@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:theme="@style/quiz_game_toolbar" >
+        android:background="@drawable/activity_toolbar_rec" >
 
         <ImageView
             android:id="@+id/back_to_main_btn"
