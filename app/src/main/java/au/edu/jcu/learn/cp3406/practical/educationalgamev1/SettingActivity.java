@@ -1,9 +1,5 @@
 package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.SwitchCompat;
-
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,13 +7,14 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 public class SettingActivity extends AppCompatActivity implements UserNameDialog.UserNameDialogListener {
 
@@ -53,44 +50,34 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
 
         //User name text View
         userNameSettingTextView = findViewById(R.id.setting_user_name);
-        userNameSettingTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openDialog();
-            }
-        });
+        userNameSettingTextView.setOnClickListener(v -> openDialog());
 
         //two switches
         enableShakingSwitch = findViewById(R.id.enable_shaking_switch);
-        enableShakingSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(enableShakingSwitch.isChecked()){
-                    enableShaking =1;
-                }else{
-                    enableShaking =0;
-                }
+        enableShakingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(enableShakingSwitch.isChecked()){
+                enableShaking =1;
+            }else{
+                enableShaking =0;
             }
         });
         shuffleQuestionSwitch = findViewById(R.id.shuffle_questions_switch);
-        shuffleQuestionSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(shuffleQuestionSwitch.isChecked()){
-                    enableShufflingQuestions =1;
-                }else{
-                    enableShufflingQuestions =0;
-                }
+        shuffleQuestionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(shuffleQuestionSwitch.isChecked()){
+                enableShufflingQuestions =1;
+            }else{
+                enableShufflingQuestions =0;
             }
         });
 
         //num of ques seekbar
-        numOfQuesSeekbar = (SeekBar) findViewById(R.id.num_of_ques_seekbar);
+        numOfQuesSeekbar = findViewById(R.id.num_of_ques_seekbar);
         numOfQuesSeekbarLabel = findViewById(R.id.num_of_ques_seekbar_label);
         numOfQuesSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                numOfQuesSeekbarLabel.setText("Number of questions: "+progress);
+                String numberOfQuestionText = "Number of questions: "+progress;
+                numOfQuesSeekbarLabel.setText(numberOfQuestionText);
             }
 
             @Override
@@ -101,18 +88,17 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //replace this code below with the database related code
                 numOfQues = seekBar.getProgress();
-//                Toast toast = Toast.makeText(SettingActivity.this,"Number of questions "+numOfQues, Toast.LENGTH_SHORT);
-//                toast.show();
             }
         });
 
         //secs per ques seekbar
-        secsPerQuesSeekbar = (SeekBar) findViewById(R.id.secs_per_ques_seekbar);
-        secsPerQuesSeekbarLabel = (TextView) findViewById(R.id.secs_per_ques_seekbar_label);
+        secsPerQuesSeekbar = findViewById(R.id.secs_per_ques_seekbar);
+        secsPerQuesSeekbarLabel = findViewById(R.id.secs_per_ques_seekbar_label);
         secsPerQuesSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                secsPerQuesSeekbarLabel.setText("Seconds per question: "+progress);
+                String secsPerQuestionText = "Seconds per question: "+progress;
+                secsPerQuesSeekbarLabel.setText(secsPerQuestionText);
             }
 
             @Override
@@ -123,27 +109,15 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //replace this code below with the database related code
                 secsPerQues = seekBar.getProgress();
-//                Toast toast = Toast.makeText(SettingActivity.this,"Done tracking-Secs per ques", Toast.LENGTH_SHORT);
-//                toast.show();
             }
         });
 
         //refers to settingSaveButton
         settingSaveButton = findViewById(R.id.setting_save_button);
-        settingSaveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveSettingOnDataBase();
-            }
-        });
+        settingSaveButton.setOnClickListener(v -> saveSettingOnDataBase());
         //back btn
         backMainBtn = findViewById(R.id.setting_back_to_main_btn);
-        backMainBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        backMainBtn.setOnClickListener(v -> onBackPressed());
 
 
         //get Setting configuration from database
@@ -184,25 +158,20 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
 
     protected void updateCurrentSettingUI(){
         //username
-        userNameSettingTextView.setText("User name:  "+ userName);
+        String userNameText = "User name:  "+ userName;
+        userNameSettingTextView.setText(userNameText);
         //shaking
-        if(enableShaking ==0){
-            enableShakingSwitch.setChecked(false);
-        }else{
-            enableShakingSwitch.setChecked(true);
-        }
+        enableShakingSwitch.setChecked(enableShaking != 0);
         //shuffling
-        if(enableShufflingQuestions ==0){
-            shuffleQuestionSwitch.setChecked(false);
-        }else{
-            shuffleQuestionSwitch.setChecked(true);
-        }
+        shuffleQuestionSwitch.setChecked(enableShufflingQuestions != 0);
         //number of questions
-        numOfQuesSeekbarLabel.setText("Number of questions: "+numOfQues);
+        String numOfQuesSeekbarLabelText ="Number of questions: "+numOfQues;
+        numOfQuesSeekbarLabel.setText(numOfQuesSeekbarLabelText);
         numOfQuesSeekbar.setProgress(numOfQues);
 
         //secs per question
-        secsPerQuesSeekbarLabel.setText("Seconds per question: "+secsPerQues);
+        String secsPerQuesSeekbarLabelText = "Seconds per question: "+secsPerQues;
+        secsPerQuesSeekbarLabel.setText(secsPerQuesSeekbarLabelText);
         secsPerQuesSeekbar.setProgress(secsPerQues);
 
     }
@@ -226,7 +195,8 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     @Override
     public void applyText(String username) {
             this.userName = username;
-            userNameSettingTextView.setText("User name:  "+ userName);
+            String userNameSettingText ="User name:  "+ userName;
+            userNameSettingTextView.setText(userNameSettingText);
     }
 
 

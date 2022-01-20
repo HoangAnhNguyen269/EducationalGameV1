@@ -56,16 +56,16 @@ public class ResultRowFragment extends Fragment {
         super.onStart();
         View layout = getView();
         if(layout != null){
-            userNameView = (TextView) layout.findViewById(R.id.result_row_user_name);
+            userNameView = layout.findViewById(R.id.result_row_user_name);
             userNameView.setText(userName);
 
-            subjectView = (TextView) layout.findViewById(R.id.result_row_subject);
+            subjectView = layout.findViewById(R.id.result_row_subject);
             subjectView.setText(subject);
 
-            scoreView = (TextView)  layout.findViewById(R.id.result_row_score);
+            scoreView = layout.findViewById(R.id.result_row_score);
             scoreView.setText(String.format(Locale.getDefault(),"%.2f", score));
 
-            avgSecondsView = (TextView) layout.findViewById(R.id.result_row_avg_seconds);
+            avgSecondsView = layout.findViewById(R.id.result_row_avg_seconds);
             avgSecondsView.setText(String.format(Locale.getDefault(),"%.2f", avgSeconds));
         }
 
