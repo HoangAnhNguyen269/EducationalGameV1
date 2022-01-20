@@ -2,7 +2,6 @@ package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,18 +24,12 @@ public class UserNameDialog extends AppCompatDialogFragment {
         View view = inflater.inflate(R.layout.layout_dialog,null);
 
         builder.setView(view).setTitle("Enter your user name")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                .setNegativeButton("Cancel", (dialog, which) -> {
 
-                    }
-                }).setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                    String username = editTextUserName.getText().toString();
-                    listener.applyText(username);
-            }
-        });
+                }).setPositiveButton("Confirm", (dialog, which) -> {
+                        String username = editTextUserName.getText().toString();
+                        listener.applyText(username);
+                });
 
         editTextUserName = view.findViewById(R.id.edit_username);
         return builder.create();
