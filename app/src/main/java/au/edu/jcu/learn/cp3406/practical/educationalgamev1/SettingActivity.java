@@ -39,6 +39,12 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     //SQLite does not have a separate Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
     int enableShaking, enableShufflingQuestions;
     int numOfQues, secsPerQues;
+
+    //store the last setting retrieved from the database\
+    String lastUserName;
+    int lastEnableShaking, lastEnableShufflingQuestions;
+    int lastNumOfQues, lastSecsPerQues;
+
     boolean isSaved = true;
 
     //database
@@ -49,8 +55,6 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
-        isSaved =true;
 
         //User name text View
         userNameSettingTextView = findViewById(R.id.setting_user_name);
@@ -64,7 +68,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             } else {
                 enableShaking = 0;
             }
-            isSaved = false;
+
         });
         shuffleQuestionSwitch = findViewById(R.id.shuffle_questions_switch);
         shuffleQuestionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -73,7 +77,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             } else {
                 enableShufflingQuestions = 0;
             }
-            isSaved = false;
+
         });
 
         //num of ques seekbar
@@ -94,7 +98,6 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //replace this code below with the database related code
                 numOfQues = seekBar.getProgress();
-                isSaved = false;
             }
         });
 
@@ -116,7 +119,6 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //replace this code below with the database related code
                 secsPerQues = seekBar.getProgress();
-                isSaved = false;
             }
         });
 
@@ -163,6 +165,14 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
 
         updateCurrentSettingUI();
         cursor.close();
+
+        lastUserName = userName;
+        lastEnableShaking = enableShaking;
+        lastEnableShufflingQuestions = enableShufflingQuestions;
+        lastNumOfQues = numOfQues;
+        lastSecsPerQues = secsPerQues;
+
+
     }
 
     protected void updateCurrentSettingUI() {
@@ -186,6 +196,10 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
 
     }
 
+    protected void checkSettingChanges() {
+        isSaved = lastUserName.equals(userName) && lastEnableShaking == enableShaking && lastEnableShufflingQuestions == enableShufflingQuestions && lastNumOfQues == numOfQues && lastSecsPerQues == secsPerQues;
+    }
+
     protected void saveSettingOnDataBase() {
         //save the information of the database in case of (for example) the screen is rotated
         ContentValues settingValues = new ContentValues();
@@ -195,9 +209,14 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         settingValues.put(GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, numOfQues); //20 questions
         settingValues.put(GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN, secsPerQues); //10 secs per question
         db.insert(GameDatabaseHelper.SETTING_TABLE, null, settingValues);
-        isSaved = true;
         Toast toast = Toast.makeText(this, "Saved", Toast.LENGTH_SHORT);
         toast.show();
+
+        lastUserName = userName;
+        lastEnableShaking = enableShaking;
+        lastEnableShufflingQuestions = enableShufflingQuestions;
+        lastNumOfQues = numOfQues;
+        lastSecsPerQues = secsPerQues;
     }
 
     protected void openDialog() {
@@ -211,7 +230,6 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         this.userName = username;
         String userNameSettingText = "User name:  " + userName;
         userNameSettingTextView.setText(userNameSettingText);
-        isSaved = false;
     }
 
 
@@ -237,6 +255,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     @Override
     public void onBackPressed() {
         // alert the user if they havent save the setting yet
+        checkSettingChanges();
         if (!isSaved) {
             AlertDialog dialog;
             AlertDialog.Builder builder;
@@ -244,7 +263,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             builder.setTitle("Do you want to leave? The setting will not be saved.");
             builder.setPositiveButton("LEAVE", (dialog1, which) -> {
                 isSaved = true;
-                onBackPressed();
+                super.onBackPressed();
             });
             builder.setNegativeButton("CANCEL", (dialog12, which) -> {
 
