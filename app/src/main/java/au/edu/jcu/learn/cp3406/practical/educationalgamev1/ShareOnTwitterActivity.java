@@ -1,6 +1,5 @@
 package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +23,7 @@ import twitter4j.User;
 
 public class ShareOnTwitterActivity extends AppCompatActivity {
     private TweetAdapter adapter;
-    private Twitter twitter = TwitterFactory.getSingleton();
+    private final Twitter twitter = TwitterFactory.getSingleton();
     private User user;
     private List<Tweet> tweets;
 
