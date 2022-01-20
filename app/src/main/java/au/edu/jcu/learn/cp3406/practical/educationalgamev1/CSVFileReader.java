@@ -12,7 +12,6 @@ public class CSVFileReader {
     InputStream is;
 
 
-
     int rowNum;
 
 
@@ -22,13 +21,13 @@ public class CSVFileReader {
         this.is = is;
 
         //Initialize number of rows
-        rowNum =0;
+        rowNum = 0;
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(this.is, StandardCharsets.UTF_8));
         String line;
-        try{
-            while((line=reader.readLine()) != null){
-                rowNum ++;
+        try {
+            while ((line = reader.readLine()) != null) {
+                rowNum++;
                 //the questions are separated by ;
                 String[] tokens = line.split(";");
                 QuizQuestion quizQuestion = new QuizQuestion();
@@ -41,12 +40,13 @@ public class CSVFileReader {
 
                 quizQuestions.add(quizQuestion);
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
-    public List<QuizQuestion> getQuizQuestions(){
+
+    public List<QuizQuestion> getQuizQuestions() {
         return this.quizQuestions;
     }
 

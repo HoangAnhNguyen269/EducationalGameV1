@@ -29,14 +29,14 @@ public class ResultRowFragment extends Fragment {
         this.userName = userName;
         this.subject = subject;
         this.score = score;
-        this.avgSeconds= avgSeconds;
+        this.avgSeconds = avgSeconds;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             userName = savedInstanceState.getString("userName");
             subject = savedInstanceState.getString("subject");
             score = savedInstanceState.getFloat("score");
@@ -55,7 +55,7 @@ public class ResultRowFragment extends Fragment {
 
         super.onStart();
         View layout = getView();
-        if(layout != null){
+        if (layout != null) {
             userNameView = layout.findViewById(R.id.result_row_user_name);
             userNameView.setText(userName);
 
@@ -63,10 +63,10 @@ public class ResultRowFragment extends Fragment {
             subjectView.setText(subject);
 
             scoreView = layout.findViewById(R.id.result_row_score);
-            scoreView.setText(String.format(Locale.getDefault(),"%.2f", score));
+            scoreView.setText(String.format(Locale.getDefault(), "%.2f", score));
 
             avgSecondsView = layout.findViewById(R.id.result_row_avg_seconds);
-            avgSecondsView.setText(String.format(Locale.getDefault(),"%.2f", avgSeconds));
+            avgSecondsView.setText(String.format(Locale.getDefault(), "%.2f", avgSeconds));
         }
 
     }
@@ -78,9 +78,6 @@ public class ResultRowFragment extends Fragment {
         savedInstanceState.putFloat("score", score);
         savedInstanceState.putFloat("avgSeconds", avgSeconds);
     }
-
-
-
 
 
 }

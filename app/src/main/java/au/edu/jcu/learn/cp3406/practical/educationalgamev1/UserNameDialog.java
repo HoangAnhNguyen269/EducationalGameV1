@@ -16,20 +16,21 @@ public class UserNameDialog extends AppCompatDialogFragment {
 
     private EditText editTextUserName;
     private UserNameDialogListener listener;
+
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder  builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.layout_dialog,null);
+        View view = inflater.inflate(R.layout.layout_dialog, null);
 
         builder.setView(view).setTitle("Enter your user name")
                 .setNegativeButton("Cancel", (dialog, which) -> {
 
                 }).setPositiveButton("Confirm", (dialog, which) -> {
-                        String username = editTextUserName.getText().toString();
-                        listener.applyText(username);
-                });
+            String username = editTextUserName.getText().toString();
+            listener.applyText(username);
+        });
 
         editTextUserName = view.findViewById(R.id.edit_username);
         return builder.create();
@@ -39,13 +40,13 @@ public class UserNameDialog extends AppCompatDialogFragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            listener =(UserNameDialogListener) context;
+            listener = (UserNameDialogListener) context;
         } catch (ClassCastException e) {
-            throw  new ClassCastException(context.toString()+" must implement UserNameDialogListener");
+            throw new ClassCastException(context.toString() + " must implement UserNameDialogListener");
         }
     }
 
-    public interface UserNameDialogListener{
+    public interface UserNameDialogListener {
         void applyText(String username);
     }
 }

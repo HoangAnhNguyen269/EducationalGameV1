@@ -19,7 +19,7 @@ import java.util.Locale;
  */
 public class StopwatchFragment extends Fragment implements View.OnClickListener {
     //Number of seconds displayed on the stopwatch.
-    public int settingSeconds =MainActivity.secsPerQues;
+    public int settingSeconds = MainActivity.secsPerQues;
     public int seconds = settingSeconds;
     //Is the stopwatch running?
     private boolean running;
@@ -85,7 +85,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
     public void onClickStart() {
         running = true;
-        finish =false;
+        finish = false;
     }
 
     public void onClickStop() {
@@ -105,10 +105,12 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
             @Override
             public void run() {
                 if (running) {
-                    if(seconds<1){
+                    if (seconds < 1) {
                         onClickStop();
                         finish = true;
-                    }else{seconds--;}
+                    } else {
+                        seconds--;
+                    }
                 }
                 int minutes = (seconds % 3600) / 60;
                 int secs = seconds % 60;

@@ -26,19 +26,19 @@ import com.squareup.seismic.ShakeDetector;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameActivity extends AppCompatActivity implements ShakeDetector.Listener{
+public class GameActivity extends AppCompatActivity implements ShakeDetector.Listener {
     final public static String SUBJECT_FINAL_STRING = "selected subject";
     public String BASIC_COMPUTER;
-    public String  MATH;
+    public String MATH;
     boolean enableShaking = MainActivity.enableShaking;
 
     //set list of Question objects
     List<QuizQuestion> quizQuestions = new ArrayList<>();
     int currentQuestion;
     int selectedAns; //which answer the user choose
-    public int timeUpAns =10;
-    int totalCorrectAns =0;
-    int totalSeconds=0;
+    public int timeUpAns = 10;
+    int totalCorrectAns = 0;
+    int totalSeconds = 0;
 
     boolean isShowingResult;
 
@@ -47,12 +47,11 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     //define the View objects in the activity layout
     TextView questionCount;
     TextView questionTextView;
-    AppCompatButton ans1Button, ans2Button, ans3Button,ans4Button;
+    AppCompatButton ans1Button, ans2Button, ans3Button, ans4Button;
     AppCompatButton nextButton;
 
     //fragment
     StopwatchFragment stopwatch;
-
 
 
     //define the variables related to database
@@ -83,8 +82,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         MATH = getResources().getStringArray(R.array.subjects)[1];
 
         //ref to the fragment
-        stopwatch= (StopwatchFragment) getSupportFragmentManager().findFragmentById(R.id.stopwatch);
-
+        stopwatch = (StopwatchFragment) getSupportFragmentManager().findFragmentById(R.id.stopwatch);
 
 
         //ref the view in the toolbar
@@ -106,38 +104,34 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         nextButton.setOnClickListener(v -> onCLickNext());
 
 
-
-
         //get the selected subject
         subject = (String) getIntent().getExtras().get(SUBJECT_FINAL_STRING);
         subjectTextView.setText(subject);
 
 
-
-
         SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(this);
         try {
-            if(savedInstanceState ==null){
+            if (savedInstanceState == null) {
                 db = gameDatabaseHelper.getReadableDatabase();
                 gameWorkerThread.setDb(db);
                 quizQuestions = gameWorkerThread.getQuizQuestions(subject);
-                currentQuestion =0;
+                currentQuestion = 0;
                 startCurrentQuestion();
-            }else{
-                isShowingResult=savedInstanceState.getBoolean("isShowingResult");
+            } else {
+                isShowingResult = savedInstanceState.getBoolean("isShowingResult");
                 currentQuestion = savedInstanceState.getInt("currentQuestion");
                 totalCorrectAns = savedInstanceState.getInt("totalCorrectAns");
                 totalSeconds = savedInstanceState.getInt("totalSeconds");
-                quizQuestions= savedInstanceState.getParcelableArrayList("quizQuestions");
-                if(isShowingResult){
+                quizQuestions = savedInstanceState.getParcelableArrayList("quizQuestions");
+                if (isShowingResult) {
                     selectedAns = savedInstanceState.getInt("selectedAns");
                     displayResult();
-                }else{
+                } else {
                     startCurrentQuestion();
                 }
             }
 
-        } catch(SQLiteException e) {
+        } catch (SQLiteException e) {
             Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
             toast.show();
             Log.i("load successfully?", "not ok");
@@ -148,28 +142,27 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     @Override
     protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putBoolean("isShowingResult",isShowingResult);
-        savedInstanceState.putInt("currentQuestion",currentQuestion);
-        savedInstanceState.putInt("selectedAns",selectedAns);
-        savedInstanceState.putInt("totalCorrectAns",totalCorrectAns);
-        savedInstanceState.putInt("totalSeconds",totalSeconds);
-      savedInstanceState.putParcelableArrayList("quizQuestions", (ArrayList<? extends Parcelable>) quizQuestions);
+        savedInstanceState.putBoolean("isShowingResult", isShowingResult);
+        savedInstanceState.putInt("currentQuestion", currentQuestion);
+        savedInstanceState.putInt("selectedAns", selectedAns);
+        savedInstanceState.putInt("totalCorrectAns", totalCorrectAns);
+        savedInstanceState.putInt("totalSeconds", totalSeconds);
+        savedInstanceState.putParcelableArrayList("quizQuestions", (ArrayList<? extends Parcelable>) quizQuestions);
 
     }
 
 
-    protected void startCurrentQuestion(){
-        if(isShowingResult){
+    protected void startCurrentQuestion() {
+        if (isShowingResult) {
             stopwatch.onClickReset();
         }
         //save Instance State to stop the timer
         stopwatch.onClickStart();
 
-        isShowingResult =false;
+        isShowingResult = false;
         selectedAns = timeUpAns;//choose an answer that is out of range
         displayQuestion();
         //reset and start the stopwatch
-
 
 
         //test handler
@@ -185,45 +178,45 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         });
     }
 
-    protected void getResult(){
-        isShowingResult =true;
+    protected void getResult() {
+        isShowingResult = true;
         stopwatch.onClickStop();
-        totalSeconds += (stopwatch.settingSeconds-stopwatch.seconds);
-        if(selectedAns== quizQuestions.get(currentQuestion).getCorrectAnsNum()){
-            totalCorrectAns ++;
+        totalSeconds += (stopwatch.settingSeconds - stopwatch.seconds);
+        if (selectedAns == quizQuestions.get(currentQuestion).getCorrectAnsNum()) {
+            totalCorrectAns++;
         }
         displayResult();
         stopwatch.finish = false;
 
     }
 
-    protected void displayQuestion(){
+    protected void displayQuestion() {
         //set
-            nextButton.setVisibility(View.GONE);
-            QuizQuestion quiz = quizQuestions.get(currentQuestion);
+        nextButton.setVisibility(View.GONE);
+        QuizQuestion quiz = quizQuestions.get(currentQuestion);
 
-            String trackQuestionCount = (currentQuestion + 1) +"/"+ quizQuestions.size();
-            questionCount.setText(trackQuestionCount);
+        String trackQuestionCount = (currentQuestion + 1) + "/" + quizQuestions.size();
+        questionCount.setText(trackQuestionCount);
 
-            questionTextView.setText(quiz.getQuestion());
-            ans1Button.setText(quiz.getAns1());
-            ans1Button.setBackgroundResource(R.drawable.round_back_white_ans_button);
-            ans2Button.setText(quiz.getAns2());
-            ans2Button.setBackgroundResource(R.drawable.round_back_white_ans_button);
-            ans3Button.setText(quiz.getAns3());
-            ans3Button.setBackgroundResource(R.drawable.round_back_white_ans_button);
-            ans4Button.setText(quiz.getAns4());
-            ans4Button.setBackgroundResource(R.drawable.round_back_white_ans_button);
-            setAllAnsButtonListener();
+        questionTextView.setText(quiz.getQuestion());
+        ans1Button.setText(quiz.getAns1());
+        ans1Button.setBackgroundResource(R.drawable.round_back_white_ans_button);
+        ans2Button.setText(quiz.getAns2());
+        ans2Button.setBackgroundResource(R.drawable.round_back_white_ans_button);
+        ans3Button.setText(quiz.getAns3());
+        ans3Button.setBackgroundResource(R.drawable.round_back_white_ans_button);
+        ans4Button.setText(quiz.getAns4());
+        ans4Button.setBackgroundResource(R.drawable.round_back_white_ans_button);
+        setAllAnsButtonListener();
 
     }
 
-    protected void displayResult(){
+    protected void displayResult() {
         displayQuestion();
         removeAllAnsButtonListener();
         nextButton.setVisibility(View.VISIBLE);
         int correctAnsNum = quizQuestions.get(currentQuestion).getCorrectAnsNum();
-        switch(correctAnsNum){
+        switch (correctAnsNum) {
             case 1:
                 ans1Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
                 break;
@@ -237,8 +230,8 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
                 ans4Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
                 break;
         }
-        if(selectedAns != correctAnsNum){
-            switch(selectedAns){
+        if (selectedAns != correctAnsNum) {
+            switch (selectedAns) {
                 case 1:
                     ans1Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
                     break;
@@ -257,7 +250,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
                     ans3Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
                     ans4Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
                     ans4Button.setBackgroundResource(R.drawable.round_red_back_incorrect_ans_button);
-                    switch(correctAnsNum){
+                    switch (correctAnsNum) {
                         case 1:
                             ans1Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
                             break;
@@ -278,7 +271,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     }
 
 
-    protected void setAllAnsButtonListener(){
+    protected void setAllAnsButtonListener() {
 
         setAnsButtonListener(ans1Button);
         setAnsButtonListener(ans2Button);
@@ -286,53 +279,53 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         setAnsButtonListener(ans4Button);
     }
 
-    protected void removeAllAnsButtonListener(){
+    protected void removeAllAnsButtonListener() {
         ans1Button.setOnClickListener(null);
         ans2Button.setOnClickListener(null);
         ans3Button.setOnClickListener(null);
         ans4Button.setOnClickListener(null);
     }
 
-    protected void setAnsButtonListener(View view){
+    protected void setAnsButtonListener(View view) {
         AppCompatButton button = (AppCompatButton) view;
         button.setOnClickListener(v -> {
-            if(button.equals(ans1Button)){
-                selectedAns =1;
-            }else if(button.equals(ans2Button)){
-                selectedAns=2;
-            }else if(button.equals(ans3Button)){
-                selectedAns=3;
-            }else {
-                selectedAns=4;
+            if (button.equals(ans1Button)) {
+                selectedAns = 1;
+            } else if (button.equals(ans2Button)) {
+                selectedAns = 2;
+            } else if (button.equals(ans3Button)) {
+                selectedAns = 3;
+            } else {
+                selectedAns = 4;
             }
             getResult(); //this method is just for testing
         });
     }
 
 
-
-
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
-        if(db !=null){db.close();}
+        if (db != null) {
+            db.close();
+        }
         gameWorkerThread.interrupt();
         //prevent potential memory leak
-        if(updateResultTask != null){
+        if (updateResultTask != null) {
             updateResultTask.cancel(true);
         }
     }
 
-    protected void onCLickNext(){
+    protected void onCLickNext() {
 
         currentQuestion++;
-        if(currentQuestion+1 <quizQuestions.size()){
+        if (currentQuestion + 1 < quizQuestions.size()) {
             startCurrentQuestion();
-        }else if(currentQuestion+1 ==quizQuestions.size()){
+        } else if (currentQuestion + 1 == quizQuestions.size()) {
             String finishButtonText = "Finish";
             nextButton.setText(finishButtonText);
             startCurrentQuestion();
-        }else{
+        } else {
             //when the quiz is finished and the user wants to store their result.
             updateResultTask = new UpdateResultTask();
             updateResultTask.execute(totalCorrectAns, totalSeconds);
@@ -340,22 +333,22 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
                     ShowQuizResultActivity.class);
             intent.putExtra(ShowQuizResultActivity.SUBJECT_STRING, subject);
             intent.putExtra(ShowQuizResultActivity.CORRECT_QUESTION_NUM, totalCorrectAns);
-            intent.putExtra(ShowQuizResultActivity.TOTAL_QUESTIONS,quizQuestions.size());
+            intent.putExtra(ShowQuizResultActivity.TOTAL_QUESTIONS, quizQuestions.size());
             intent.putExtra(ShowQuizResultActivity.TOTAL_SECONDS, totalSeconds);
             startActivity(intent);
         }
     }
 
     private class UpdateResultTask extends AsyncTask<Integer, Void, Boolean> {
-        ContentValues userResultValues ;
+        ContentValues userResultValues;
 
         protected void onPreExecute() {
             userResultValues = new ContentValues();
         }
 
         protected Boolean doInBackground(Integer... intNums) {
-            float scoreInDatabase = (float) totalCorrectAns/quizQuestions.size()*10;
-            float averageSecondsDatabase = (float) totalSeconds/quizQuestions.size();
+            float scoreInDatabase = (float) totalCorrectAns / quizQuestions.size() * 10;
+            float averageSecondsDatabase = (float) totalSeconds / quizQuestions.size();
             SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(GameActivity.this);
             try {
                 SQLiteDatabase db = gameDatabaseHelper.getWritableDatabase();
@@ -363,7 +356,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
                 userResultValues.put(GameDatabaseHelper.SUBJECT_COLUMN, subject);
                 userResultValues.put(GameDatabaseHelper.SCORE_COLUMN, scoreInDatabase);
                 userResultValues.put(GameDatabaseHelper.AVERAGE_SECONDS_COLUMN, averageSecondsDatabase);
-                db.insert(GameDatabaseHelper.RESULT_TABLE,null,userResultValues);
+                db.insert(GameDatabaseHelper.RESULT_TABLE, null, userResultValues);
                 db.close();
                 return true;
             } catch (SQLiteException e) {
@@ -381,8 +374,9 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         }
     }
 
-    @Override public void hearShake() {
-        if(enableShaking){
+    @Override
+    public void hearShake() {
+        if (enableShaking) {
             Intent intent = new Intent(GameActivity.this,
                     GameActivity.class);
             intent.putExtra(GameActivity.SUBJECT_FINAL_STRING, subject);

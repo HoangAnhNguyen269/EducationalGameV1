@@ -16,7 +16,8 @@ public class TweetAdapter extends ArrayAdapter<Tweet> {
         super(context, 0, tweets);
     }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public View getView(int position, View convertView,
                         @NonNull ViewGroup parent) {
 
