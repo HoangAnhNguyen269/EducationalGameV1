@@ -65,8 +65,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     UpdateResultTask updateResultTask;
 
     public GameActivity() {
-        Handler mainHandler = new Handler();
-        gameWorkerThread = new GameWorkerThread(this, mainHandler); //this = MainActivity; mainHandler refers to mainHandler in MainActivity
+        gameWorkerThread = new GameWorkerThread(); //this = MainActivity; mainHandler refers to mainHandler in MainActivity
         gameWorkerThread.start();//The java.lang.Thread.start() method causes this thread to begin execution; start the worker thread
     }
 

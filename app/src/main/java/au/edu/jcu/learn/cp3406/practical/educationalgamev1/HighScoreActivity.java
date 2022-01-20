@@ -1,20 +1,13 @@
 package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.CursorAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.Locale;
@@ -29,12 +22,7 @@ public class HighScoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_high_score);
         backHomeBtn = findViewById(R.id.high_score_back_to_main_btn);
-        backHomeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        backHomeBtn.setOnClickListener(v -> onBackPressed());
 
 
         try {
@@ -42,8 +30,6 @@ public class HighScoreActivity extends AppCompatActivity {
             db = gameDatabaseHelper.getReadableDatabase();
             cursor = db.query(GameDatabaseHelper.RESULT_TABLE, new String[]{"_id", GameDatabaseHelper.USER_NAME_COLUMN,GameDatabaseHelper.SUBJECT_COLUMN,GameDatabaseHelper.SCORE_COLUMN, GameDatabaseHelper.AVERAGE_SECONDS_COLUMN},
                     null, null, null, null, GameDatabaseHelper.SCORE_COLUMN +" DESC" );
-//            Toast toast = Toast.makeText(this, String.valueOf(cursor.getCount()), Toast.LENGTH_SHORT);
-//            toast.show();
              displayTopResult();
 
         }catch(Exception e) {
@@ -106,9 +92,8 @@ public class HighScoreActivity extends AppCompatActivity {
     @Override
     public void onRestart() {
         super.onRestart();
-        Cursor newCursor = db.query(GameDatabaseHelper.RESULT_TABLE, new String[]{"_id", GameDatabaseHelper.USER_NAME_COLUMN,GameDatabaseHelper.SUBJECT_COLUMN,GameDatabaseHelper.SCORE_COLUMN, GameDatabaseHelper.AVERAGE_SECONDS_COLUMN},
+        cursor = db.query(GameDatabaseHelper.RESULT_TABLE, new String[]{"_id", GameDatabaseHelper.USER_NAME_COLUMN,GameDatabaseHelper.SUBJECT_COLUMN,GameDatabaseHelper.SCORE_COLUMN, GameDatabaseHelper.AVERAGE_SECONDS_COLUMN},
                 null, null, null, null, GameDatabaseHelper.USER_NAME_COLUMN +"");
-        cursor = newCursor;
         displayTopResult();
 
     }
