@@ -1,12 +1,12 @@
 package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.app.NavUtils;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.squareup.seismic.ShakeDetector;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +40,8 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     int totalCorrectAns =0;
     int totalSeconds=0;
 
-    boolean finishQuiz;
     boolean isShowingResult;
 
-    public int numQues =10; //number of question
     String subject; //the subject the user choose in the launch screen
 
     //define the View objects in the activity layout
@@ -60,12 +57,9 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
 
     //define the variables related to database
     private SQLiteDatabase db;
-    private Cursor cursor;
-    public static InputStream mathcsvInputStream;
-    public static InputStream computerCsvInputStream;
 
     //define WorkerThread
-    private GameWorkerThread gameWorkerThread;
+    private final GameWorkerThread gameWorkerThread;
 
     //define the asynctask variable
     UpdateResultTask updateResultTask;
@@ -95,44 +89,31 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
 
 
         //ref the view in the toolbar
-        final ImageView backBtn = findViewById(R.id.back_to_main_btn);
+        //back to main button
+        ImageView backToMainBtn = findViewById(R.id.back_to_main_btn);
+        backToMainBtn.setOnClickListener(v -> onBackPressed());
         final TextView subjectTextView = findViewById(R.id.subject_name);
 
         //ref the view in the layout
         questionCount = findViewById(R.id.question_count);
         questionTextView = findViewById(R.id.question_text_view);
         ans1Button = findViewById(R.id.ans1_button);
-        ans2Button = findViewById(R.id.ans2_button);;
+        ans2Button = findViewById(R.id.ans2_button);
         ans3Button = findViewById(R.id.ans3_button);
         ans4Button = findViewById(R.id.ans4_button);
 
         nextButton = findViewById(R.id.next_button);
 
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onCLickNext();
+        nextButton.setOnClickListener(v -> onCLickNext());
 
-            }
-        });
 
-        //back to main button
-        ImageView backToMainBtn = findViewById(R.id.back_to_main_btn);
-        backToMainBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
 
 
         //get the selected subject
         subject = (String) getIntent().getExtras().get(SUBJECT_FINAL_STRING);
         subjectTextView.setText(subject);
 
-        //load the csv file which is the input for the initial database
-        mathcsvInputStream = getResources().openRawResource(R.raw.math_questions_data);
-        computerCsvInputStream =getResources().openRawResource(R.raw.basic_computer_questions_data);
+
 
 
         SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(this);
@@ -148,8 +129,8 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
                 currentQuestion = savedInstanceState.getInt("currentQuestion");
                 totalCorrectAns = savedInstanceState.getInt("totalCorrectAns");
                 totalSeconds = savedInstanceState.getInt("totalSeconds");
-                quizQuestions= savedInstanceState.<QuizQuestion>getParcelableArrayList("quizQuestions");
-                if(isShowingResult ==true){
+                quizQuestions= savedInstanceState.getParcelableArrayList("quizQuestions");
+                if(isShowingResult){
                     selectedAns = savedInstanceState.getInt("selectedAns");
                     displayResult();
                 }else{
@@ -166,7 +147,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putBoolean("isShowingResult",isShowingResult);
         savedInstanceState.putInt("currentQuestion",currentQuestion);
@@ -209,13 +190,8 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         isShowingResult =true;
         stopwatch.onClickStop();
         totalSeconds += (stopwatch.settingSeconds-stopwatch.seconds);
-        if(selectedAns == timeUpAns){
-//            Toast.makeText(GameActivity.this, "Run out of time", Toast.LENGTH_LONG).show();
-        } else if(selectedAns== quizQuestions.get(currentQuestion).getCorrectAnsNum()){
-//            Toast.makeText(GameActivity.this, "Correct", Toast.LENGTH_LONG).show();
+        if(selectedAns== quizQuestions.get(currentQuestion).getCorrectAnsNum()){
             totalCorrectAns ++;
-        } else{
-//            Toast.makeText(GameActivity.this, "Wrong", Toast.LENGTH_LONG).show();
         }
         displayResult();
         stopwatch.finish = false;
@@ -226,7 +202,10 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         //set
             nextButton.setVisibility(View.GONE);
             QuizQuestion quiz = quizQuestions.get(currentQuestion);
-            questionCount.setText(String.valueOf(currentQuestion+1)+"/"+String.valueOf(quizQuestions.size()));
+
+            String trackQuestionCount = (currentQuestion + 1) +"/"+ quizQuestions.size();
+            questionCount.setText(trackQuestionCount);
+
             questionTextView.setText(quiz.getQuestion());
             ans1Button.setText(quiz.getAns1());
             ans1Button.setBackgroundResource(R.drawable.round_back_white_ans_button);
@@ -317,20 +296,17 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
 
     protected void setAnsButtonListener(View view){
         AppCompatButton button = (AppCompatButton) view;
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(button.equals(ans1Button)){
-                    selectedAns =1;
-                }else if(button.equals(ans2Button)){
-                    selectedAns=2;
-                }else if(button.equals(ans3Button)){
-                    selectedAns=3;
-                }else if(button.equals(ans4Button)){
-                    selectedAns=4;
-                }else{}
-                getResult(); //this method is just for testing
+        button.setOnClickListener(v -> {
+            if(button.equals(ans1Button)){
+                selectedAns =1;
+            }else if(button.equals(ans2Button)){
+                selectedAns=2;
+            }else if(button.equals(ans3Button)){
+                selectedAns=3;
+            }else {
+                selectedAns=4;
             }
+            getResult(); //this method is just for testing
         });
     }
 
@@ -354,7 +330,8 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         if(currentQuestion+1 <quizQuestions.size()){
             startCurrentQuestion();
         }else if(currentQuestion+1 ==quizQuestions.size()){
-            nextButton.setText("Finish");
+            String finishButtonText = "Finish";
+            nextButton.setText(finishButtonText);
             startCurrentQuestion();
         }else{
             //when the quiz is finished and the user wants to store their result.

@@ -14,7 +14,7 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
 
     //store the subject name
     //check strings.xml
-    public static final String MATH = "Math";
+    public static final String MATH = "Math";//if we have more subjects, this variable will be useful
     public static final String BASIC_COMPUTER = "Basic Computer";
     //store table name
     public static final String MATH_TABLE ="MATH_TABLE";
