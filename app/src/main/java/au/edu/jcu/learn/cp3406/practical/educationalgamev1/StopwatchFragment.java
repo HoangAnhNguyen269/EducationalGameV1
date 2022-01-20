@@ -40,11 +40,11 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_stopwatch, container, false);
         runTimer(layout);
-        Button startButton = (Button) layout.findViewById(R.id.start_button);
+        Button startButton = layout.findViewById(R.id.start_button);
         startButton.setOnClickListener(this);
-        Button stopButton = (Button) layout.findViewById(R.id.stop_button);
+        Button stopButton = layout.findViewById(R.id.stop_button);
         stopButton.setOnClickListener(this);
-        Button resetButton = (Button) layout.findViewById(R.id.reset_button);
+        Button resetButton = layout.findViewById(R.id.reset_button);
         resetButton.setOnClickListener(this);
         return layout;
     }
@@ -99,7 +99,7 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
 
 
     private void runTimer(View view) {
-        final TextView timeView = (TextView) view.findViewById(R.id.time_view);
+        final TextView timeView = view.findViewById(R.id.time_view);
         final Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override
