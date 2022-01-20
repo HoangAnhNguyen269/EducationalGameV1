@@ -50,6 +50,8 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        isSaved =true;
+
         //User name text View
         userNameSettingTextView = findViewById(R.id.setting_user_name);
         userNameSettingTextView.setOnClickListener(v -> openDialog());
