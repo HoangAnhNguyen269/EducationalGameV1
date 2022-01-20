@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 
@@ -25,28 +26,24 @@ import twitter4j.User;
 public class ShareOnTwitterActivity extends AppCompatActivity {
     private TweetAdapter adapter;
     private final Twitter twitter = TwitterFactory.getSingleton();
-    private User user;
     private List<Tweet> tweets;
 
     ImageView backBtn;
 
     ListView tweetList;
-    private TextView tweetMessageView;
-    private AppCompatButton seeOtherTweetsButton;
 
     //define variables that store the quiz information that can be shared via twitter
     //Temporarily assign some value to the variable
     public String userName = "Admin";
-    public String subject ="Math";
+    public String subject = "Math";
     public float score = 7.0F;
     public float avgSeconds = (float) 2.9;
     String message;
-    String hashtag ="#EducationalGameCommunity";
+    String hashtag = "#EducationalGameCommunity";
 
     //use it to prevent resend the tweet when rotating the screen
     boolean hasSent;
     boolean isDisplayingOtherTweets;
-
 
 
     @Override
@@ -56,48 +53,40 @@ public class ShareOnTwitterActivity extends AppCompatActivity {
         tweetList = findViewById(R.id.tweets);
 
         backBtn = findViewById(R.id.twitter_back_to_main_btn);
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        backBtn.setOnClickListener(v -> onBackPressed());
 
         tweets = new ArrayList<>();
         adapter = new TweetAdapter(this, tweets);
         tweetList.setAdapter(adapter);
 
-        //get infor from intent
+        //get data from intent
         userName = (String) getIntent().getExtras().get("userName");
         subject = (String) getIntent().getExtras().get("subject");
-        score = getIntent().getFloatExtra("score",6.0f);
+        score = getIntent().getFloatExtra("score", 6.0f);
         avgSeconds = getIntent().getFloatExtra("avgSeconds", 5.5f);
 
-        message = "Congratulation! The student: "+ userName+" has achieved the score: "+ String.format(Locale.getDefault(),"%.2f", score)+" with average "+ String.format(Locale.getDefault(),"%.2f", avgSeconds)+ " seconds per question for "+ subject+" subject!! "+ hashtag;
-        tweetMessageView = findViewById(R.id.tweet_message_view);
-        tweetMessageView.setText("\""+message+"\"");
+        message = "Congratulation! The student: " + userName + " has achieved the score: " + String.format(Locale.getDefault(), "%.2f", score) + " with average " + String.format(Locale.getDefault(), "%.2f", avgSeconds) + " seconds per question for " + subject + " subject!! " + hashtag;
+        TextView tweetMessageView = findViewById(R.id.tweet_message_view);
 
-        seeOtherTweetsButton = findViewById(R.id.see_other_tweets_button);
-        seeOtherTweetsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                seeOtherTweets();
-            }
-        });
+        String twitterMessage = "\"" + message + "\"";
+        tweetMessageView.setText(twitterMessage);
 
-        if(savedInstanceState != null){
-            hasSent =savedInstanceState.getBoolean("hasSent");
+        AppCompatButton seeOtherTweetsButton = findViewById(R.id.see_other_tweets_button);
+        seeOtherTweetsButton.setOnClickListener(v -> seeOtherTweets());
+
+        if (savedInstanceState != null) {
+            hasSent = savedInstanceState.getBoolean("hasSent");
             isDisplayingOtherTweets = savedInstanceState.getBoolean("isDisplayingOtherTweets");
-        } else{
-            hasSent =false;
+        } else {
+            hasSent = false;
             isDisplayingOtherTweets = false;
         }
-        if(isDisplayingOtherTweets){
+        if (isDisplayingOtherTweets) {
             seeOtherTweets();
         }
     }
 
-    void seeOtherTweets(){
+    void seeOtherTweets() {
         tweetList.setVisibility(View.VISIBLE);
         isDisplayingOtherTweets = true;
     }
@@ -106,44 +95,30 @@ public class ShareOnTwitterActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        Background.run(new Runnable() {
-            @Override
-            public void run() {
-                if (isAuthorised()) {
-                    //uncomment this line of code
-                    if(hasSent == false){
-                        try {
-                            twitter.updateStatus(message);
-                            hasSent =true;
-                        } catch (TwitterException ignored) {
-                            hasSent =false;
-                        }
+        Background.run(() -> {
+            if (isAuthorised()) {
+                //uncomment this line of code
+                if (!hasSent) {
+                    try {
+                        twitter.updateStatus(message);
+                        hasSent = true;
+                    } catch (TwitterException ignored) {
+                        hasSent = false;
                     }
-                    //uncomment the code below
-
-                    tweets.clear();
-                    tweets.addAll(queryTwitter());
-                } else {
                 }
+                //uncomment the code below
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+                tweets.clear();
+                tweets.addAll(queryTwitter());
             }
+
+            runOnUiThread(() -> adapter.notifyDataSetChanged());
         });
     }
 
-//    public void authorise(View view) {
-//        Intent intent = new Intent(this, Authenticate.class);
-//        startActivity(intent);
-//    }
-
     private boolean isAuthorised() {
         try {
-            user = twitter.verifyCredentials();
+            User user = twitter.verifyCredentials();
             Log.i("twitter", "verified");
             return true;
         } catch (Exception e) {
@@ -174,7 +149,7 @@ public class ShareOnTwitterActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle savedInstanceState) {
+    protected void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putBoolean("hasSent", hasSent);
         savedInstanceState.putBoolean("isDisplayingOtherTweets", isDisplayingOtherTweets);
