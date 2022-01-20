@@ -1,12 +1,10 @@
 package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 
-import android.util.Log;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class CSVFileReader {
         //Initialize number of rows
         rowNum =0;
 
-        BufferedReader reader = new BufferedReader(new InputStreamReader(this.is, Charset.forName("UTF-8")));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(this.is, StandardCharsets.UTF_8));
         String line;
         try{
             while((line=reader.readLine()) != null){

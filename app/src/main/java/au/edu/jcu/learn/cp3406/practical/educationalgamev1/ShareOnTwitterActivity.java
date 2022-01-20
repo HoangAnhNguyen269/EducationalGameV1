@@ -3,6 +3,7 @@ package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,6 +27,8 @@ public class ShareOnTwitterActivity extends AppCompatActivity {
     private final Twitter twitter = TwitterFactory.getSingleton();
     private User user;
     private List<Tweet> tweets;
+
+    ImageView backBtn;
 
     ListView tweetList;
     private TextView tweetMessageView;
@@ -51,6 +54,14 @@ public class ShareOnTwitterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share_on_twitter);
         tweetList = findViewById(R.id.tweets);
+
+        backBtn = findViewById(R.id.twitter_back_to_main_btn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
         tweets = new ArrayList<>();
         adapter = new TweetAdapter(this, tweets);

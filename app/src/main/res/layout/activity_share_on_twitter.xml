@@ -12,18 +12,12 @@
         android:background="@color/twitter_blue" >
 
         <ImageView
-            android:id="@+id/setting_back_to_main_btn"
+            android:id="@+id/twitter_back_to_main_btn"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="15dp"
             android:src="@drawable/baseline_arrow_back_white_20" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -31,15 +25,10 @@
                 android:text="Twitter Sharing"
                 android:textColor="@color/white"
                 android:textSize="30sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_centerInParent="true"
+                android:gravity="center"/>
 
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="15dp"
-                android:src="@drawable/setting_setting_icon" />
-        </LinearLayout>
 
 
 
