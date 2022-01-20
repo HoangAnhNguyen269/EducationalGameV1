@@ -29,6 +29,7 @@ public class HighScoreActivity extends AppCompatActivity {
         try {
             SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(this);
             db = gameDatabaseHelper.getReadableDatabase();
+            //get the result row in a descending order
             cursor = db.query(GameDatabaseHelper.RESULT_TABLE, new String[]{"_id", GameDatabaseHelper.USER_NAME_COLUMN, GameDatabaseHelper.SUBJECT_COLUMN, GameDatabaseHelper.SCORE_COLUMN, GameDatabaseHelper.AVERAGE_SECONDS_COLUMN},
                     null, null, null, null, GameDatabaseHelper.SCORE_COLUMN + " DESC");
             displayTopResult();
@@ -63,7 +64,7 @@ public class HighScoreActivity extends AppCompatActivity {
             Log.i("Subject", subject);
             Log.i("avg second", String.format(Locale.getDefault(), "%.2f", avgSeconds));
 
-//                inflate the fragment
+            //inflate the fragment that represents a row of result table
             ResultRowFragment rowFragment = new ResultRowFragment(userName, subject, score, avgSeconds);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.result_table, rowFragment);
@@ -92,6 +93,7 @@ public class HighScoreActivity extends AppCompatActivity {
     @Override
     public void onRestart() {
         super.onRestart();
+        //update the cursor when this activity restarts
         cursor = db.query(GameDatabaseHelper.RESULT_TABLE, new String[]{"_id", GameDatabaseHelper.USER_NAME_COLUMN, GameDatabaseHelper.SUBJECT_COLUMN, GameDatabaseHelper.SCORE_COLUMN, GameDatabaseHelper.AVERAGE_SECONDS_COLUMN},
                 null, null, null, null, GameDatabaseHelper.USER_NAME_COLUMN + "");
         displayTopResult();

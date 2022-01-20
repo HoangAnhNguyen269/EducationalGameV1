@@ -164,6 +164,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     }
 
     protected void updateCurrentSettingUI() {
+        //help the activity can display the latest update from SETTING TABLE in the database
         //username
         String userNameText = "User name:  " + userName;
         userNameSettingTextView.setText(userNameText);
@@ -184,7 +185,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     }
 
     protected void saveSettingOnDataBase() {
-        //save the information of the database
+        //save the information of the database in case of (for example) the screen is rotated
         ContentValues settingValues = new ContentValues();
         settingValues.put(GameDatabaseHelper.SETTING_USER_NAME_COLUMN, userName);
         settingValues.put(GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN, enableShaking); //no shaking
@@ -193,6 +194,8 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         settingValues.put(GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN, secsPerQues); //10 secs per question
         db.insert(GameDatabaseHelper.SETTING_TABLE, null, settingValues);
         isSaved = true;
+        Toast toast = Toast.makeText(this, "Saved", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     protected void openDialog() {
@@ -202,6 +205,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
 
     @Override
     public void applyText(String username) {
+        //store the userName
         this.userName = username;
         String userNameSettingText = "User name:  " + userName;
         userNameSettingTextView.setText(userNameSettingText);
@@ -230,7 +234,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
 
     @Override
     public void onBackPressed() {
-//        saveSettingOnDataBase();
+        // alert the user if they havent save the setting yet
         if (!isSaved) {
             AlertDialog dialog;
             AlertDialog.Builder builder;

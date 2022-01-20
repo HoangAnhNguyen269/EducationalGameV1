@@ -28,17 +28,21 @@ import java.util.List;
 
 public class GameActivity extends AppCompatActivity implements ShakeDetector.Listener {
     final public static String SUBJECT_FINAL_STRING = "selected subject";
+
+    //two Strings below store the name of the subject that is stored in string.xml
     public String BASIC_COMPUTER;
     public String MATH;
+
+    //check whether does the app allow to start quiz by shaking
     boolean enableShaking = MainActivity.enableShaking;
 
     //set list of Question objects
     List<QuizQuestion> quizQuestions = new ArrayList<>();
-    int currentQuestion;
+    int currentQuestion;//the number of current question
     int selectedAns; //which answer the user choose
-    public int timeUpAns = 10;
+    public int timeUpAns = 10; //the answer the activity receives when the time is up
     int totalCorrectAns = 0;
-    int totalSeconds = 0;
+    int totalSeconds = 0;//total seconds that the user spend on the quiz
 
     boolean isShowingResult;
 
@@ -50,17 +54,17 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     AppCompatButton ans1Button, ans2Button, ans3Button, ans4Button;
     AppCompatButton nextButton;
 
-    //fragment
+    //stopwatch fragment
     StopwatchFragment stopwatch;
 
 
     //define the variables related to database
     private SQLiteDatabase db;
 
-    //define WorkerThread
+    //define a WorkerThread that can help to retrieved the quiz questions from the database
     private final GameWorkerThread gameWorkerThread;
 
-    //define the asynctask variable
+    //define the ASyncTask object
     UpdateResultTask updateResultTask;
 
     public GameActivity() {
@@ -75,7 +79,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
 
         //add sensor manager to shake detector
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        ShakeDetector sd = new ShakeDetector(this);
+        ShakeDetector sd = new ShakeDetector(this); //from an external library
         sd.start(sensorManager);
 
         BASIC_COMPUTER = getResources().getStringArray(R.array.subjects)[0];
@@ -160,12 +164,10 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         stopwatch.onClickStart();
 
         isShowingResult = false;
-        selectedAns = timeUpAns;//choose an answer that is out of range
+        selectedAns = timeUpAns;//choose an answer that is out of range when times up
         displayQuestion();
-        //reset and start the stopwatch
 
-
-        //test handler
+        //this handler check whether the time for a question is up
         final Handler handler = new Handler();
         handler.post(new Runnable() {
             @Override
@@ -191,7 +193,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     }
 
     protected void displayQuestion() {
-        //set
+        //display a new question with it choices
         nextButton.setVisibility(View.GONE);
         QuizQuestion quiz = quizQuestions.get(currentQuestion);
 
@@ -272,7 +274,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
 
 
     protected void setAllAnsButtonListener() {
-
+        //set listeners for answer buttons
         setAnsButtonListener(ans1Button);
         setAnsButtonListener(ans2Button);
         setAnsButtonListener(ans3Button);
@@ -280,6 +282,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     }
 
     protected void removeAllAnsButtonListener() {
+        //remove listener when displaying the question's answer
         ans1Button.setOnClickListener(null);
         ans2Button.setOnClickListener(null);
         ans3Button.setOnClickListener(null);
@@ -340,6 +343,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     }
 
     private class UpdateResultTask extends AsyncTask<Integer, Void, Boolean> {
+        //this task help update the quiz result on the database
         ContentValues userResultValues;
 
         protected void onPreExecute() {

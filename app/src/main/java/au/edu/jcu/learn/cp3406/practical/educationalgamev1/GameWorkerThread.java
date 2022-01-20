@@ -38,6 +38,7 @@ public class GameWorkerThread extends Thread {
     }
 
     public List<QuizQuestion> getQuizQuestions(String subject) {
+        //return a list of QuizQuestion objects for the GameActivity
         String tableName;
         if (subject.equals(GameDatabaseHelper.BASIC_COMPUTER)) {
             tableName = GameDatabaseHelper.BASIC_COMPUTER_TABLE;

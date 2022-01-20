@@ -26,11 +26,12 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
     Button scoreBoardButton;
     Button settingButton;
 
-    //define the setting values from the db, therefore other class can refers in this activity without invoke SQLite database
+    //define the setting values from the db, therefore other class can refers these variables from MainActivity without invoke SQLite database
     public static String userName = "admin";
     public static boolean enableShaking = true, enableShufflingQuestions = true;
     public static int numOfQues = 5, secsPerQues;
 
+    //define 2 InputStreams get from 2 csv files in the raw table
     public static InputStream mathcsvInputStream;
     public static InputStream computerCsvInputStream;
 
@@ -79,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
     }
 
     void getSettingsFromDatabase() {
-
+        //get the latest setting record from the SETTING_TABLE in the database
         try {
             SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(MainActivity.this);
             SQLiteDatabase db;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
     }
 
     void startQuizzing() {
-        //start the quiz randomly
+        //when the user shakes the phone, a subject is chosen randomly
         Random rand = new Random();
         String subject;
         if (rand.nextInt(2) == 1) {
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
 
     @Override
     public void onBackPressed() {
-
+        //require user press back two times to end the app
         if (lastPressedTime + 2000 > System.currentTimeMillis()) { //wait for 2 seconds
             super.onBackPressed();
             Intent backToHomeLauncherIntent = new Intent(Intent.ACTION_MAIN);

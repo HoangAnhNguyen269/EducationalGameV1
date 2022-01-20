@@ -23,4 +23,5 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("au.edu.jcu.learn.cp3406.practical.educationalgamev1", appContext.getPackageName());
     }
+
 }

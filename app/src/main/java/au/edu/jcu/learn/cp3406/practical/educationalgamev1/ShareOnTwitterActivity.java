@@ -75,8 +75,8 @@ public class ShareOnTwitterActivity extends AppCompatActivity {
         seeOtherTweetsButton.setOnClickListener(v -> seeOtherTweets());
 
         if (savedInstanceState != null) {
-            hasSent = savedInstanceState.getBoolean("hasSent");
-            isDisplayingOtherTweets = savedInstanceState.getBoolean("isDisplayingOtherTweets");
+            hasSent = savedInstanceState.getBoolean("hasSent"); //prevent the twitter update the same status again
+            isDisplayingOtherTweets = savedInstanceState.getBoolean("isDisplayingOtherTweets"); //check whether isDisplayingOtherTweets
         } else {
             hasSent = false;
             isDisplayingOtherTweets = false;
@@ -97,7 +97,6 @@ public class ShareOnTwitterActivity extends AppCompatActivity {
 
         Background.run(() -> {
             if (isAuthorised()) {
-                //uncomment this line of code
                 if (!hasSent) {
                     try {
                         twitter.updateStatus(message);
@@ -106,8 +105,6 @@ public class ShareOnTwitterActivity extends AppCompatActivity {
                         hasSent = false;
                     }
                 }
-                //uncomment the code below
-
                 tweets.clear();
                 tweets.addAll(queryTwitter());
             }

@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 public class UserNameDialog extends AppCompatDialogFragment {
+    //this defined a customized AppCompatDialogFragment that get the user name
 
     private EditText editTextUserName;
     private UserNameDialogListener listener;
@@ -47,6 +48,7 @@ public class UserNameDialog extends AppCompatDialogFragment {
     }
 
     public interface UserNameDialogListener {
+        //this will help to set the username get in this fragment and set on the Activity invokes it
         void applyText(String username);
     }
 }

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVFileReader {
+    //get the InputStream then convert it become a list of QuizQuestion object
     InputStream is;
 
 
