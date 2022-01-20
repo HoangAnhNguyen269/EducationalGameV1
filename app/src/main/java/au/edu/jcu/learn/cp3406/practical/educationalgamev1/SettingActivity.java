@@ -13,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
@@ -37,7 +38,8 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     String userName;
     //SQLite does not have a separate Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
     int enableShaking, enableShufflingQuestions;
-    int numOfQues,secsPerQues;
+    int numOfQues, secsPerQues;
+    boolean isSaved = true;
 
     //database
     private SQLiteDatabase db;
@@ -55,19 +57,21 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         //two switches
         enableShakingSwitch = findViewById(R.id.enable_shaking_switch);
         enableShakingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(enableShakingSwitch.isChecked()){
-                enableShaking =1;
-            }else{
-                enableShaking =0;
+            if (enableShakingSwitch.isChecked()) {
+                enableShaking = 1;
+            } else {
+                enableShaking = 0;
             }
+            isSaved = false;
         });
         shuffleQuestionSwitch = findViewById(R.id.shuffle_questions_switch);
         shuffleQuestionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if(shuffleQuestionSwitch.isChecked()){
-                enableShufflingQuestions =1;
-            }else{
-                enableShufflingQuestions =0;
+            if (shuffleQuestionSwitch.isChecked()) {
+                enableShufflingQuestions = 1;
+            } else {
+                enableShufflingQuestions = 0;
             }
+            isSaved = false;
         });
 
         //num of ques seekbar
@@ -76,7 +80,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         numOfQuesSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String numberOfQuestionText = "Number of questions: "+progress;
+                String numberOfQuestionText = "Number of questions: " + progress;
                 numOfQuesSeekbarLabel.setText(numberOfQuestionText);
             }
 
@@ -88,6 +92,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //replace this code below with the database related code
                 numOfQues = seekBar.getProgress();
+                isSaved = false;
             }
         });
 
@@ -97,7 +102,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         secsPerQuesSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                String secsPerQuestionText = "Seconds per question: "+progress;
+                String secsPerQuestionText = "Seconds per question: " + progress;
                 secsPerQuesSeekbarLabel.setText(secsPerQuestionText);
             }
 
@@ -109,6 +114,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             public void onStopTrackingTouch(SeekBar seekBar) {
                 //replace this code below with the database related code
                 secsPerQues = seekBar.getProgress();
+                isSaved = false;
             }
         });
 
@@ -125,15 +131,16 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         try {
             db = gameDatabaseHelper.getReadableDatabase();
             getCurrentSettingOnDatabase();
-            if(savedInstanceState!= null){
-                userName=savedInstanceState.getString("userName");
+            if (savedInstanceState != null) {
+                userName = savedInstanceState.getString("userName");
                 enableShaking = savedInstanceState.getInt("enableShaking");
                 enableShufflingQuestions = savedInstanceState.getInt("enableShufflingQuestions");
                 numOfQues = savedInstanceState.getInt("numOfQues");
                 secsPerQues = savedInstanceState.getInt("secsPerQues");
+                isSaved = savedInstanceState.getBoolean("isSaved");
                 updateCurrentSettingUI();
             }
-        } catch(SQLiteException e) {
+        } catch (SQLiteException e) {
             Toast toast = Toast.makeText(this, "Database unavailable", Toast.LENGTH_SHORT);
             toast.show();
             Log.i("Database available?:  ", "No");
@@ -141,86 +148,107 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
 
     }
 
-    protected void getCurrentSettingOnDatabase(){
-        Cursor cursor = db.query(GameDatabaseHelper.SETTING_TABLE, new String[]{"_id", GameDatabaseHelper.SETTING_USER_NAME_COLUMN,GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN,GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN},
-                null, null, null, null, null );
+    protected void getCurrentSettingOnDatabase() {
+        Cursor cursor = db.query(GameDatabaseHelper.SETTING_TABLE, new String[]{"_id", GameDatabaseHelper.SETTING_USER_NAME_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN},
+                null, null, null, null, null);
         cursor.moveToFirst();
         cursor.moveToLast(); //we take the last record of setting
         userName = cursor.getString(1);
-        enableShaking =cursor.getInt(2);
-        enableShufflingQuestions =cursor.getInt(3);
-        numOfQues =cursor.getInt(4);
-        secsPerQues =cursor.getInt(5);
+        enableShaking = cursor.getInt(2);
+        enableShufflingQuestions = cursor.getInt(3);
+        numOfQues = cursor.getInt(4);
+        secsPerQues = cursor.getInt(5);
 
         updateCurrentSettingUI();
         cursor.close();
     }
 
-    protected void updateCurrentSettingUI(){
+    protected void updateCurrentSettingUI() {
         //username
-        String userNameText = "User name:  "+ userName;
+        String userNameText = "User name:  " + userName;
         userNameSettingTextView.setText(userNameText);
         //shaking
         enableShakingSwitch.setChecked(enableShaking != 0);
         //shuffling
         shuffleQuestionSwitch.setChecked(enableShufflingQuestions != 0);
         //number of questions
-        String numOfQuesSeekbarLabelText ="Number of questions: "+numOfQues;
+        String numOfQuesSeekbarLabelText = "Number of questions: " + numOfQues;
         numOfQuesSeekbarLabel.setText(numOfQuesSeekbarLabelText);
         numOfQuesSeekbar.setProgress(numOfQues);
 
         //secs per question
-        String secsPerQuesSeekbarLabelText = "Seconds per question: "+secsPerQues;
+        String secsPerQuesSeekbarLabelText = "Seconds per question: " + secsPerQues;
         secsPerQuesSeekbarLabel.setText(secsPerQuesSeekbarLabelText);
         secsPerQuesSeekbar.setProgress(secsPerQues);
 
     }
 
-    protected void saveSettingOnDataBase(){
+    protected void saveSettingOnDataBase() {
         //save the information of the database
         ContentValues settingValues = new ContentValues();
         settingValues.put(GameDatabaseHelper.SETTING_USER_NAME_COLUMN, userName);
-        settingValues.put(GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN,enableShaking); //no shaking
+        settingValues.put(GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN, enableShaking); //no shaking
         settingValues.put(GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, enableShufflingQuestions); //no shuffling
         settingValues.put(GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, numOfQues); //20 questions
         settingValues.put(GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN, secsPerQues); //10 secs per question
         db.insert(GameDatabaseHelper.SETTING_TABLE, null, settingValues);
-
+        isSaved = true;
     }
 
-    protected void openDialog(){
-            UserNameDialog userNameDialog = new UserNameDialog();
-            userNameDialog.show(getSupportFragmentManager(),"user name dialog");
+    protected void openDialog() {
+        UserNameDialog userNameDialog = new UserNameDialog();
+        userNameDialog.show(getSupportFragmentManager(), "user name dialog");
     }
+
     @Override
     public void applyText(String username) {
-            this.userName = username;
-            String userNameSettingText ="User name:  "+ userName;
-            userNameSettingTextView.setText(userNameSettingText);
+        this.userName = username;
+        String userNameSettingText = "User name:  " + userName;
+        userNameSettingTextView.setText(userNameSettingText);
+        isSaved = false;
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        savedInstanceState.putString("userName",userName);
-        savedInstanceState.putInt("enableShaking",enableShaking);
-        savedInstanceState.putInt("enableShufflingQuestions",enableShufflingQuestions);
-        savedInstanceState.putInt("numOfQues",numOfQues);
-        savedInstanceState.putInt("secsPerQues",secsPerQues);
+        savedInstanceState.putString("userName", userName);
+        savedInstanceState.putInt("enableShaking", enableShaking);
+        savedInstanceState.putInt("enableShufflingQuestions", enableShufflingQuestions);
+        savedInstanceState.putInt("numOfQues", numOfQues);
+        savedInstanceState.putInt("secsPerQues", secsPerQues);
+        savedInstanceState.putBoolean("isSaved", isSaved);
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
-        if(db != null){
+        if (db != null) {
             db.close();
         }
     }
 
     @Override
     public void onBackPressed() {
-        saveSettingOnDataBase();
-        super.onBackPressed();
+//        saveSettingOnDataBase();
+        if (!isSaved) {
+            AlertDialog dialog;
+            AlertDialog.Builder builder;
+            builder = new AlertDialog.Builder(SettingActivity.this);
+            builder.setTitle("Do you want to leave? The setting will not be saved.");
+            builder.setPositiveButton("LEAVE", (dialog1, which) -> {
+                isSaved = true;
+                onBackPressed();
+            });
+            builder.setNegativeButton("CANCEL", (dialog12, which) -> {
+
+            });
+            dialog = builder.create();
+            dialog.show();
+        } else {
+            super.onBackPressed();
+        }
+
     }
+
 }
