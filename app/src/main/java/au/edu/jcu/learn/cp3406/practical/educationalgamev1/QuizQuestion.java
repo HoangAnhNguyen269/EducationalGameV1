@@ -3,8 +3,6 @@ package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-
 public class QuizQuestion implements Parcelable {
 
 
