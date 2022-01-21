@@ -35,6 +35,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
 
     //check whether does the app allow to start quiz by shaking
     boolean enableShaking = MainActivity.enableShaking;
+    boolean enableSound = MainActivity.enableSound;
 
     //set list of Question objects
     List<QuizQuestion> quizQuestions = new ArrayList<>();
@@ -67,6 +68,9 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     //define the ASyncTask object
     UpdateResultTask updateResultTask;
 
+    //sound manager
+    EffectAudioManager audioManager;
+
     public GameActivity() {
         gameWorkerThread = new GameWorkerThread(); //this = MainActivity; mainHandler refers to mainHandler in MainActivity
         gameWorkerThread.start();//The java.lang.Thread.start() method causes this thread to begin execution; start the worker thread
@@ -76,6 +80,12 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+
+
+        //soundPool Demo
+        audioManager = new EffectAudioManager(this);
+
 
         //add sensor manager to shake detector
         SensorManager sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -99,9 +109,13 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         questionCount = findViewById(R.id.question_count);
         questionTextView = findViewById(R.id.question_text_view);
         ans1Button = findViewById(R.id.ans1_button);
+        ans1Button.setSoundEffectsEnabled(false);
         ans2Button = findViewById(R.id.ans2_button);
+        ans2Button.setSoundEffectsEnabled(false);
         ans3Button = findViewById(R.id.ans3_button);
+        ans3Button.setSoundEffectsEnabled(false);
         ans4Button = findViewById(R.id.ans4_button);
+        ans4Button.setSoundEffectsEnabled(false);
 
         nextButton = findViewById(R.id.next_button);
 
@@ -186,6 +200,11 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
         totalSeconds += (stopwatch.settingSeconds - stopwatch.seconds);
         if (selectedAns == quizQuestions.get(currentQuestion).getCorrectAnsNum()) {
             totalCorrectAns++;
+            //add sound here
+            if(enableSound){audioManager.play(EffectSound.CORRECT_ANS);}
+
+        } else{
+            if(enableSound) audioManager.play(EffectSound.INCORRECT_ANS);
         }
         displayResult();
         stopwatch.finish = false;
@@ -231,6 +250,7 @@ public class GameActivity extends AppCompatActivity implements ShakeDetector.Lis
             case 4:
                 ans4Button.setBackgroundResource(R.drawable.round_green_back_correct_ans_button);
                 break;
+
         }
         if (selectedAns != correctAnsNum) {
             switch (selectedAns) {

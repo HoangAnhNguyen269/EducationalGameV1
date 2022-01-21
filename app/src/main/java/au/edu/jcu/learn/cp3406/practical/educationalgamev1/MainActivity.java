@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
 
     //define the setting values from the db, therefore other class can refers these variables from MainActivity without invoke SQLite database
     public static String userName = "admin";
-    public static boolean enableShaking = true, enableShufflingQuestions = true;
+    public static boolean enableShaking = true, enableShufflingQuestions = true, enableSound =true;
     public static int numOfQues = 5, secsPerQues;
 
     //define 2 InputStreams get from 2 csv files in the raw table
@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
             SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(MainActivity.this);
             SQLiteDatabase db;
             db = gameDatabaseHelper.getReadableDatabase();
-            Cursor cursor = db.query(GameDatabaseHelper.SETTING_TABLE, new String[]{"_id", GameDatabaseHelper.SETTING_USER_NAME_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN},
+            Cursor cursor = db.query(GameDatabaseHelper.SETTING_TABLE, new String[]{"_id", GameDatabaseHelper.SETTING_USER_NAME_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN,GameDatabaseHelper.SETTING_ENABLE_SOUND_COLUMN},
                     null, null, null, null, null);
             cursor.moveToFirst();
             cursor.moveToLast(); //we take the last record of setting
@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements ShakeDetector.Lis
 
             numOfQues = cursor.getInt(4);
             secsPerQues = cursor.getInt(5);
+            enableSound = cursor.getInt(6)==1;
             db.close();
             cursor.close();
 

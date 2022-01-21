@@ -58,6 +58,10 @@ public class ShowQuizResultActivity extends AppCompatActivity implements ShakeDe
         String yourScoreViewText = "Your score: " + totalCorrectQuestion + "/" + totalQuestion;
         yourScoreView.setText(yourScoreViewText);
 
+
+
+
+
         timeView = findViewById(R.id.result_total_seconds);
         String timeViewText = "Time: " + totalSeconds + " seconds";
         timeView.setText(timeViewText);
@@ -76,6 +80,7 @@ public class ShowQuizResultActivity extends AppCompatActivity implements ShakeDe
             intent.putExtra(GameActivity.SUBJECT_FINAL_STRING, subject);
             startActivity(intent);
         });
+        EffectAudioManager audioManager = new EffectAudioManager(this);
         shareOnTwitter = findViewById(R.id.share_on_twitter_button);
         shareOnTwitter.setOnClickListener(v -> {
             Intent intent = new Intent(ShowQuizResultActivity.this, ShareOnTwitterActivity.class);
@@ -85,8 +90,12 @@ public class ShowQuizResultActivity extends AppCompatActivity implements ShakeDe
             intent.putExtra("score", score);
             float avgSeconds = (float) totalSeconds / totalQuestion;
             intent.putExtra("avgSeconds", avgSeconds);
+
+            if(MainActivity.enableSound){audioManager.play(EffectSound.CONGRATULATION);}
             startActivity(intent);
         });
+
+
 
     }
 

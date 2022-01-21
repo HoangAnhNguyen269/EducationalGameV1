@@ -63,6 +63,17 @@
             style="@style/setting_row"
             />
 
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/enable_sound_switch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Enable Sound Effect"
+            android:gravity="start"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:checked="true"
+            />
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/enable_shaking_switch"
             android:layout_width="match_parent"
@@ -138,6 +149,8 @@
             android:text="Save"
             android:textColor="@color/white"
             />
+
+
 
 
     </androidx.appcompat.widget.LinearLayoutCompat>

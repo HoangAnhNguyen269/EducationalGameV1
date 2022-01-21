@@ -71,8 +71,15 @@ public class ShareOnTwitterActivity extends AppCompatActivity {
         String twitterMessage = "\"" + message + "\"";
         tweetMessageView.setText(twitterMessage);
 
+        EffectAudioManager audioManager = new EffectAudioManager(this);
         AppCompatButton seeOtherTweetsButton = findViewById(R.id.see_other_tweets_button);
-        seeOtherTweetsButton.setOnClickListener(v -> seeOtherTweets());
+        seeOtherTweetsButton.setOnClickListener(v -> {
+            seeOtherTweets();
+            if(audioManager.isReady() && MainActivity.enableSound){
+                EffectSound effectSound = EffectSound.TWITTER;
+                audioManager.play(effectSound);
+            }
+        });
 
         if (savedInstanceState != null) {
             hasSent = savedInstanceState.getBoolean("hasSent"); //prevent the twitter update the same status again

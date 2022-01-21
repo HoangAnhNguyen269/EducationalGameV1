@@ -21,6 +21,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
 
     TextView userNameSettingTextView;
 
+    SwitchCompat enableSoundSwitch;
     SwitchCompat enableShakingSwitch;
     SwitchCompat shuffleQuestionSwitch;
 
@@ -37,12 +38,12 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
 
     String userName;
     //SQLite does not have a separate Boolean storage class. Instead, Boolean values are stored as integers 0 (false) and 1 (true).
-    int enableShaking, enableShufflingQuestions;
+    int enableShaking, enableShufflingQuestions,enableSound;
     int numOfQues, secsPerQues;
 
     //store the last setting retrieved from the database\
     String lastUserName;
-    int lastEnableShaking, lastEnableShufflingQuestions;
+    int lastEnableShaking, lastEnableShufflingQuestions,lastEnableSound;
     int lastNumOfQues, lastSecsPerQues;
 
     boolean isSaved = true;
@@ -60,7 +61,18 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         userNameSettingTextView = findViewById(R.id.setting_user_name);
         userNameSettingTextView.setOnClickListener(v -> openDialog());
 
-        //two switches
+        //three switches
+
+        enableSoundSwitch = findViewById(R.id.enable_sound_switch);
+        enableSoundSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (enableSoundSwitch.isChecked()) {
+                enableSound = 1;
+            } else {
+                enableSound = 0;
+            }
+
+        });
+
         enableShakingSwitch = findViewById(R.id.enable_shaking_switch);
         enableShakingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (enableShakingSwitch.isChecked()) {
@@ -70,6 +82,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             }
 
         });
+
         shuffleQuestionSwitch = findViewById(R.id.shuffle_questions_switch);
         shuffleQuestionSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (shuffleQuestionSwitch.isChecked()) {
@@ -137,6 +150,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
             getCurrentSettingOnDatabase();
             if (savedInstanceState != null) {
                 userName = savedInstanceState.getString("userName");
+                enableSound = savedInstanceState.getInt("enableSound");
                 enableShaking = savedInstanceState.getInt("enableShaking");
                 enableShufflingQuestions = savedInstanceState.getInt("enableShufflingQuestions");
                 numOfQues = savedInstanceState.getInt("numOfQues");
@@ -153,7 +167,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     }
 
     protected void getCurrentSettingOnDatabase() {
-        Cursor cursor = db.query(GameDatabaseHelper.SETTING_TABLE, new String[]{"_id", GameDatabaseHelper.SETTING_USER_NAME_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN},
+        Cursor cursor = db.query(GameDatabaseHelper.SETTING_TABLE, new String[]{"_id", GameDatabaseHelper.SETTING_USER_NAME_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SOUND_COLUMN},
                 null, null, null, null, null);
         cursor.moveToFirst();
         cursor.moveToLast(); //we take the last record of setting
@@ -162,11 +176,13 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         enableShufflingQuestions = cursor.getInt(3);
         numOfQues = cursor.getInt(4);
         secsPerQues = cursor.getInt(5);
+        enableSound = cursor.getInt(6);
 
         updateCurrentSettingUI();
         cursor.close();
 
         lastUserName = userName;
+        lastEnableSound = enableSound;
         lastEnableShaking = enableShaking;
         lastEnableShufflingQuestions = enableShufflingQuestions;
         lastNumOfQues = numOfQues;
@@ -180,6 +196,8 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         //username
         String userNameText = "User name:  " + userName;
         userNameSettingTextView.setText(userNameText);
+        //enable sound
+        enableSoundSwitch.setChecked(enableSound != 0);
         //shaking
         enableShakingSwitch.setChecked(enableShaking != 0);
         //shuffling
@@ -197,7 +215,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     }
 
     protected void checkSettingChanges() {
-        isSaved = lastUserName.equals(userName) && lastEnableShaking == enableShaking && lastEnableShufflingQuestions == enableShufflingQuestions && lastNumOfQues == numOfQues && lastSecsPerQues == secsPerQues;
+        isSaved = lastUserName.equals(userName) && lastEnableSound == enableSound && lastEnableShaking == enableShaking  && lastEnableShufflingQuestions == enableShufflingQuestions && lastNumOfQues == numOfQues && lastSecsPerQues == secsPerQues;
     }
 
     protected void saveSettingOnDataBase() {
@@ -208,11 +226,13 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         settingValues.put(GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, enableShufflingQuestions); //no shuffling
         settingValues.put(GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, numOfQues); //20 questions
         settingValues.put(GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN, secsPerQues); //10 secs per question
+        settingValues.put(GameDatabaseHelper.SETTING_ENABLE_SOUND_COLUMN, enableSound);
         db.insert(GameDatabaseHelper.SETTING_TABLE, null, settingValues);
         Toast toast = Toast.makeText(this, "Saved", Toast.LENGTH_SHORT);
         toast.show();
 
         lastUserName = userName;
+        lastEnableSound =enableSound;
         lastEnableShaking = enableShaking;
         lastEnableShufflingQuestions = enableShufflingQuestions;
         lastNumOfQues = numOfQues;
@@ -237,6 +257,7 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("userName", userName);
+        savedInstanceState.putInt("enableSound", enableSound);
         savedInstanceState.putInt("enableShaking", enableShaking);
         savedInstanceState.putInt("enableShufflingQuestions", enableShufflingQuestions);
         savedInstanceState.putInt("numOfQues", numOfQues);

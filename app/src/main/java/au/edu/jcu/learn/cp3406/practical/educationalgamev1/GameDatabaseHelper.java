@@ -43,7 +43,7 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
     public static final String SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN = "ENABLE_SHUFFLING_QUESTIONS";
     public static final String SETTING_NUMBER_OF_QUESTIONS_COLUMN = "NUMBER_OF_QUESTIONS";
     public static final String SETTING_SECONDS_PER_QUESTION_COLUMN = "SECONDS_PER_QUESTION";
-
+    public static final String SETTING_ENABLE_SOUND_COLUMN= "ENABLE_SOUND";
 
     GameDatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -134,7 +134,8 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
                     + SETTING_ENABLE_SHAKING_COLUMN + " INTEGER, "
                     + SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN + " INTEGER, "
                     + SETTING_NUMBER_OF_QUESTIONS_COLUMN + " INTEGER, "
-                    + SETTING_SECONDS_PER_QUESTION_COLUMN + " INTEGER);");
+                    + SETTING_SECONDS_PER_QUESTION_COLUMN + " INTEGER, "
+                    + SETTING_ENABLE_SOUND_COLUMN + " INTEGER);");
 
             //set the default setting configuration
             ContentValues settingValues = new ContentValues();
@@ -143,6 +144,7 @@ public class GameDatabaseHelper extends SQLiteOpenHelper {
             settingValues.put(SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, 0); //no shuffling
             settingValues.put(SETTING_NUMBER_OF_QUESTIONS_COLUMN, 20); //20 questions
             settingValues.put(SETTING_SECONDS_PER_QUESTION_COLUMN, 10); //10 secs per question
+            settingValues.put(SETTING_ENABLE_SOUND_COLUMN,1);
             db.insert(SETTING_TABLE, null, settingValues);
 
 
