@@ -17,7 +17,7 @@ import java.util.Locale;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StopwatchFragment extends Fragment implements View.OnClickListener {
+public class StopwatchFragment extends Fragment{
     //Number of seconds displayed on the stopwatch.
     public int settingSeconds = MainActivity.secsPerQues;
     public int seconds = settingSeconds;
@@ -40,26 +40,9 @@ public class StopwatchFragment extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_stopwatch, container, false);
         runTimer(layout);
-        Button startButton = layout.findViewById(R.id.start_button);
-        startButton.setOnClickListener(this);
-        Button stopButton = layout.findViewById(R.id.stop_button);
-        stopButton.setOnClickListener(this);
-        Button resetButton = layout.findViewById(R.id.reset_button);
-        resetButton.setOnClickListener(this);
         return layout;
     }
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.start_button) {
-            onClickStart();
-        } else if (id == R.id.stop_button) {
-            onClickStop();
-        } else if (id == R.id.reset_button) {
-            onClickReset();
-        }
-    }
 
     @Override
     public void onPause() {

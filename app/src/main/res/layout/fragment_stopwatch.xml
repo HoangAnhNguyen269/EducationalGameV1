@@ -13,31 +13,4 @@
         android:layout_gravity="center_horizontal"
         android:textAppearance="@android:style/TextAppearance.Large"
         />
-
-    <Button
-        android:id="@+id/start_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
-        android:text="@string/start_button_text"
-        android:visibility="gone"/>
-
-    <Button
-        android:id="@+id/stop_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:text="@string/stop_button_text"
-        android:visibility="gone"/>
-
-    <Button
-        android:id="@+id/reset_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp"
-        android:text="@string/reset_button_text"
-        android:visibility="gone"/>
 </androidx.appcompat.widget.LinearLayoutCompat>
