@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingActivity">
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+    tools:context=".SettingActivity"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -23,135 +18,154 @@
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="15dp"
+                android:contentDescription="@string/back_button_icon_description"
                 android:src="@drawable/baseline_arrow_back_white_20" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:gravity="center">
+                android:gravity="center"
+                tools:ignore="UseCompoundDrawables">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Setting"
+                    android:text="@string/setting_string"
                     android:textColor="@color/white"
                     android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold" >
+
+                </TextView>
 
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_alignParentEnd="true"
                     android:layout_margin="15dp"
-                    android:src="@drawable/setting_setting_icon" />
+                    android:src="@drawable/setting_setting_icon"
+                    android:contentDescription="@string/setting_icon_description" />
             </LinearLayout>
 
 
 
         </RelativeLayout>
 
-
-        <TextView
-            android:id="@+id/setting_user_name"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="User name:  Michael Jackson"
-            android:textSize="20dp"
-            android:layout_margin="15dp"
-            style="@style/setting_row"
-            />
-
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/enable_sound_switch"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Enable Sound Effect"
-            android:gravity="start"
-            android:padding="10dp"
-            android:textSize="15sp"
-            android:checked="true"
-            />
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/enable_shaking_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Shake to start/restart quiz"
-            android:gravity="start"
-            android:padding="10dp"
-            android:textSize="15sp"
-            android:checked="true"
-            />
+            android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/shuffle_questions_switch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Shuffle questions"
-            android:gravity="start"
-            android:padding="10dp"
-            android:textSize="15sp"/>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-            <TextView
-                android:id="@+id/num_of_ques_seekbar_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Number of questions: 10"
-                android:minWidth="200dp"
-                style="@style/setting_row"
-                android:textSize="15sp"
-                />
-            <SeekBar
+            <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:min="5"
-                android:max="20"
-                android:progress="10"
-                android:id="@+id/num_of_ques_seekbar"
-                />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_margin="10dp">
-            <TextView
-                style="@style/setting_row"
-                android:textSize="15sp"
-                android:id="@+id/secs_per_ques_seekbar_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="200dp"
-                android:text="Seconds per question: 10"
-                />
-            <SeekBar
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:min="10"
-                android:max="60"
-                android:progress="10"
-                android:id="@+id/secs_per_ques_seekbar"
-                />
-        </androidx.appcompat.widget.LinearLayoutCompat>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:id="@+id/setting_save_button"
-            android:layout_margin="20dp"
-            android:layout_gravity="center"
-            android:textAllCaps="true"
-            android:text="Save"
-            android:textColor="@color/white"
-            />
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/setting_user_name"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_name_placeholder"
+                    android:textSize="20sp"
+                    android:layout_margin="15dp"
+                    style="@style/setting_row"
+                    />
 
 
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/dark_mode_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dark_mode_switch_text"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textSize="15sp"
+                    />
 
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/enable_sound_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enable_sound_effect_switch_text"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textSize="15sp"
+                    android:checked="true"
+                    />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/enable_shaking_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shake_to_start_restart_quiz_switch_text"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textSize="15sp"
+                    android:checked="true"
+                    />
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
-</ScrollView>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/shuffle_questions_switch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shuffle_questions_switch_text"
+                    android:gravity="start"
+                    android:padding="10dp"
+                    android:textSize="15sp"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp">
+                    <TextView
+                        android:id="@+id/num_of_ques_seekbar_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/number_of_questions_seekbar_text_placeholder"
+                        android:minWidth="200dp"
+                        style="@style/setting_row"
+                        android:textSize="15sp"
+                        />
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:min="5"
+                        android:max="20"
+                        android:progress="10"
+                        android:id="@+id/num_of_ques_seekbar"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_margin="10dp">
+                    <TextView
+                        style="@style/setting_row"
+                        android:textSize="15sp"
+                        android:id="@+id/secs_per_ques_seekbar_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minWidth="200dp"
+                        android:text="@string/seconds_per_question_text_placeholder"
+                        />
+                    <SeekBar
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:min="10"
+                        android:max="60"
+                        android:progress="10"
+                        android:id="@+id/secs_per_ques_seekbar"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:id="@+id/setting_save_button"
+                    android:layout_margin="20dp"
+                    android:layout_gravity="center"
+                    android:textAllCaps="true"
+                    android:text="@string/save_button_text"
+                    android:textColor="@color/white"
+                    />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </ScrollView>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

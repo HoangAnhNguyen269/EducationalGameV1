@@ -7,7 +7,7 @@
         android:textSize="12sp"
         style="@style/setting_row"
         android:gravity="center"
-        android:text="User name"
+        android:text="@string/user_name_column_text"
         android:id="@+id/result_row_user_name"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -16,7 +16,7 @@
 
     <TextView
         android:textSize="12sp"
-        android:text="subject"
+        android:text="@string/subject_column_text"
         android:id="@+id/result_row_subject"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -25,7 +25,7 @@
         android:layout_weight="1"/>
     <TextView
         android:textSize="12sp"
-        android:text="score"
+        android:text="@string/score_column_text"
         android:id="@+id/result_row_score"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -35,7 +35,7 @@
 
     <TextView
         android:textSize="12sp"
-        android:text="avg seconds"
+        android:text="@string/seconds_question_column_text"
         android:id="@+id/result_row_avg_seconds"
         android:layout_width="wrap_content"
         android:layout_height="50dp"

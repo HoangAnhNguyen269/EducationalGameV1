@@ -1,10 +1,12 @@
 package au.edu.jcu.learn.cp3406.practical.educationalgamev1;
 
 import android.content.ContentValues;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -15,11 +17,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.SwitchCompat;
 
 public class SettingActivity extends AppCompatActivity implements UserNameDialog.UserNameDialogListener {
 
     TextView userNameSettingTextView;
+
+
 
     SwitchCompat enableSoundSwitch;
     SwitchCompat enableShakingSwitch;
@@ -51,11 +56,40 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
     //database
     private SQLiteDatabase db;
 
+    //dark mode
+    boolean isDarkModeOn;
+    SwitchCompat darkModeToggle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+
+        //dark mode
+        darkModeToggle = findViewById(R.id.dark_mode_switch);
+        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                isDarkModeOn = true;
+                darkModeToggle.setChecked(true);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                isDarkModeOn = false;
+                darkModeToggle.setChecked(false);
+                break;
+        }
+        darkModeToggle.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (darkModeToggle.isChecked()) {
+                isDarkModeOn = true;
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            } else {
+                AppCompatDelegate
+                        .setDefaultNightMode(
+                                AppCompatDelegate
+                                        .MODE_NIGHT_NO);
+                isDarkModeOn=false;
+            }
+        });
+
 
         //User name text View
         userNameSettingTextView = findViewById(R.id.setting_user_name);

@@ -17,12 +17,13 @@
             android:layout_height="20dp"
             android:layout_centerVertical="true"
             android:layout_marginStart="15dp"
-            android:src="@drawable/baseline_arrow_back_white_20" />
+            android:src="@drawable/baseline_arrow_back_white_20"
+            android:contentDescription="@string/back_button_icon_description"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Twitter Sharing"
+                android:text="@string/twitter_sharing"
                 android:textColor="@color/white"
                 android:textSize="30sp"
                 android:textStyle="bold"
@@ -47,13 +48,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="#EducationalGameCommunity"
+            android:text="@string/app_hashtag_on_twitter"
             android:textColor="@color/twitter_blue"
             android:layout_gravity="center"/>
         <ImageView
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:src="@drawable/twitter_logo"/>
+            android:src="@drawable/twitter_logo"
+            android:contentDescription="@string/twitter_logo_description" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
     <TextView
@@ -72,7 +74,7 @@
         android:layout_gravity="center"
         android:textAllCaps="true"
         android:textSize="15sp"
-        android:text="See other results"
+        android:text="@string/see_other_results_button_text"
         android:padding="10dp"
         android:background="@drawable/round_blue_see_other_tweets_button"
         android:textColor="@color/white"

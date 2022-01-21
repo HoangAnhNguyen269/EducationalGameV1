@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,6 +29,7 @@
                 android:adjustViewBounds="true"
                 android:id="@+id/app_logo"
                 android:layout_marginEnd="100dp"
+                android:contentDescription="@string/quiz_app_icon_text"
                 />
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -41,12 +41,12 @@
                     android:id="@+id/score_board"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="Score Board" />
+                    android:text="@string/score_board_button_text" />
                 <Button
                     android:id="@+id/setting_button_main_screen"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:text="Setting" />
+                    android:text="@string/setting_button_text" />
             </LinearLayout>
 
         </LinearLayout>
@@ -59,7 +59,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_gravity="start"
-            android:text="choose a subject"
+            android:text="@string/choose_a_subject"
             android:textAllCaps="true"
             android:textSize="18sp"/>
 
@@ -68,7 +68,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_margin="10dp"
-            >
+            android:baselineAligned="false">
             <LinearLayout
                 android:id="@+id/basic_computer_quiz_btn"
                 android:layout_width="0dp"
@@ -82,12 +82,13 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/basic_computer_icon"/>
+                    android:src="@drawable/basic_computer_icon"
+                    android:contentDescription="@string/basic_computer_icon"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Basic Computer"
+                    android:text="@string/basic_computer_string"
                     android:textSize="20sp"
                     android:textColor="@color/white"/>
 
@@ -105,12 +106,13 @@
                 <ImageView
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:contentDescription="@string/math_icon_description"
                     android:src="@drawable/main_math_icon"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Math"
+                    android:text="@string/math_string"
                     android:textSize="20sp"
                     android:textColor="@color/white"
                     />
