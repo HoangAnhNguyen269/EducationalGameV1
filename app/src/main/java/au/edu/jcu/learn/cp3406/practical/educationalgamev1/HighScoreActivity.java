@@ -25,7 +25,6 @@ public class HighScoreActivity extends AppCompatActivity {
         backHomeBtn = findViewById(R.id.high_score_back_to_main_btn);
         backHomeBtn.setOnClickListener(v -> onBackPressed());
 
-
         try {
             SQLiteOpenHelper gameDatabaseHelper = new GameDatabaseHelper(this);
             db = gameDatabaseHelper.getReadableDatabase();
@@ -88,18 +87,6 @@ public class HighScoreActivity extends AppCompatActivity {
         super.onDestroy();
 
     }
-
-
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        //update the cursor when this activity restarts
-        cursor = db.query(GameDatabaseHelper.RESULT_TABLE, new String[]{"_id", GameDatabaseHelper.USER_NAME_COLUMN, GameDatabaseHelper.SUBJECT_COLUMN, GameDatabaseHelper.SCORE_COLUMN, GameDatabaseHelper.AVERAGE_SECONDS_COLUMN},
-                null, null, null, null, GameDatabaseHelper.USER_NAME_COLUMN + "");
-        displayTopResult();
-
-    }
-
     @Override
     public void onBackPressed() {
         finish();
