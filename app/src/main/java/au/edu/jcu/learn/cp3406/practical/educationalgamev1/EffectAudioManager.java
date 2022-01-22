@@ -45,7 +45,7 @@ public class EffectAudioManager implements SoundPool.OnLoadCompleteListener{
         }else{
             sound = EffectSound.values()[3];
         }
-        Log.i("EffectAudioManager", "loaded sound: " + sound+ sampleId);
+        Log.i("EffectAudioManager", "loaded sound: " + sound+"---"+ sampleId);
         soundIds.put(sound, sampleId);
     }
 

@@ -199,6 +199,20 @@ public class SettingActivity extends AppCompatActivity implements UserNameDialog
         }
 
     }
+    @Override
+    protected void onResume() {
+        switch (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) {
+            case Configuration.UI_MODE_NIGHT_YES:
+                isDarkModeOn = true;
+                darkModeToggle.setChecked(true);
+                break;
+            case Configuration.UI_MODE_NIGHT_NO:
+                isDarkModeOn = false;
+                darkModeToggle.setChecked(false);
+                break;
+        }
+        super.onResume();
+    }
 
     protected void getCurrentSettingOnDatabase() {
         Cursor cursor = db.query(GameDatabaseHelper.SETTING_TABLE, new String[]{"_id", GameDatabaseHelper.SETTING_USER_NAME_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHAKING_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SHUFFLING_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_NUMBER_OF_QUESTIONS_COLUMN, GameDatabaseHelper.SETTING_SECONDS_PER_QUESTION_COLUMN, GameDatabaseHelper.SETTING_ENABLE_SOUND_COLUMN},
